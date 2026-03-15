@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import styles from '../NotFound/NotFound.module.css'
+import usePageTitle from '../../hooks/usePageTitle'
 
 export default function ErrorPage() {
+  usePageTitle('Error');
   const navigate = useNavigate()
 
   return (

@@ -14,6 +14,35 @@ export default function SkyAssistant() {
   const { convert, symbol, currency } = useCurrency()
 
   const [isOpen, setIsOpen] = useState(false)
+  const [showHook, setShowHook] = useState(false)
+  const [hookMessage, setHookMessage] = useState('')
+
+  const hooks = [
+    "¿Buscando tu próximo destino? ✈️",
+    "¡Nova tiene ofertas secretas para ti! 🔥",
+    "¿Necesitas ayuda con tu reserva? 🏨",
+    "¡Descubre a dónde viajar hoy! 🌎",
+    "¿Hola! ¿Planificamos tu próxima aventura? ✨"
+  ]
+
+  useEffect(() => {
+    const showRandomHook = () => {
+      if (!isOpen) {
+        setHookMessage(hooks[Math.floor(Math.random() * hooks.length)])
+        setShowHook(true)
+        setTimeout(() => setShowHook(false), 5000)
+      }
+    }
+
+    const initialTimer = setTimeout(showRandomHook, 10000)
+
+    const interval = setInterval(showRandomHook, 300000)
+
+    return () => {
+      clearTimeout(initialTimer)
+      clearInterval(interval)
+    }
+  }, [isOpen])
   const [messages, setMessages] = useState([
     { 
       type: 'bot', 
@@ -62,7 +91,6 @@ export default function SkyAssistant() {
   const processResponse = (userInput) => {
     const text = userInput.toLowerCase()
     
-    // 1. DYNAMIC CITY MATCHING
     const citiesInVuelos = [...new Set(vuelos.map(v => v.destino.toLowerCase()))]
     const matchedCity = citiesInVuelos.find(city => text.includes(city))
 
@@ -84,7 +112,6 @@ export default function SkyAssistant() {
       }
     }
 
-    // 2. CHEAPEST FLIGHT
     if (text.includes("barato") || text.includes("económico")) {
       const flight = findCheapestFlight()
       if (flight) {
@@ -102,7 +129,6 @@ export default function SkyAssistant() {
       }
     }
 
-    // 3. OFFERS
     if (text.includes("oferta") || text.includes("promo") || text.includes("descuento")) {
       return {
         text: "¡Tenemos 'Hot Deals' activos! Actualmente hay descuentos de hasta el 40% en rutas seleccionadas. ¿Quieres ver nuestras mini-ofertas?",
@@ -117,7 +143,6 @@ export default function SkyAssistant() {
       }
     }
 
-    // 4. HOTELS
     if (text.includes("hotel") || text.includes("alojamiento")) {
       return {
         text: "Contamos con alianzas en las principales ciudades. ¿En qué destino buscas hospedarte?",
@@ -142,7 +167,6 @@ export default function SkyAssistant() {
        }
     }
 
-    // 5. DESTINATIONS
     if (text.includes("destino") || text.includes("donde") || text.includes("dónde")) {
       return {
         text: "Nuestros destinos más buscados hoy son Madrid, Miami, Buenos Aires y Cancún. ¿Te interesa alguno?",
@@ -200,12 +224,18 @@ export default function SkyAssistant() {
     <div className={styles.container}>
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+            <motion.div 
             className={styles.chatWindow}
-            initial={{ opacity: 0, scale: 0.8, y: 30, transformOrigin: 'bottom right' }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 30 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            initial={{ opacity: 0, scale: 0.9, y: 30, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.9, y: 30, filter: 'blur(10px)' }}
+            transition={{ 
+              type: 'spring', 
+              damping: 25, 
+              stiffness: 300,
+              opacity: { duration: 0.2 },
+              filter: { duration: 0.3 }
+            }}
           >
             <div className={styles.chatHeader}>
               <div className={styles.botIcon}>
@@ -213,7 +243,7 @@ export default function SkyAssistant() {
               </div>
               <div>
                 <div className={styles.botName}>Nova AI</div>
-                <div className={styles.botStatus}>Asistente Premium</div>
+                <div className={styles.botStatus}>Inteligencia certificada</div>
               </div>
               <button className={styles.btnClose} onClick={() => setIsOpen(false)}>×</button>
             </div>
@@ -223,8 +253,9 @@ export default function SkyAssistant() {
                 <div key={i} style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 8 }}>
                   <motion.div 
                     className={`${styles.message} ${styles[msg.type]}`}
-                    initial={{ opacity: 0, x: msg.type === 'bot' ? -10 : 10 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
                   >
                     {msg.text}
                   </motion.div>
@@ -287,18 +318,59 @@ export default function SkyAssistant() {
         )}
       </AnimatePresence>
 
-      <motion.button 
+      <motion.div 
         className={styles.floatButton}
         whileHover={{ scale: 1.05, boxShadow: '0 15px 35px rgba(37, 99, 235, 0.5)' }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className={styles.logo}>
-          <img src={logoImg} alt="SkyNova Logo" />
-        </div>
-        {!isOpen && <div className={styles.pulse} />}
-        {!isOpen && <div className={styles.badge}>Nova</div>}
-      </motion.button>
+        {isOpen ? (
+          <div className={styles.logo}>
+            <img src={logoImg} alt="SkyNova Logo" />
+          </div>
+        ) : (
+          <>
+            <div className={styles.logo}>
+              <img src={logoImg} alt="SkyNova Logo" />
+            </div>
+            <div className={styles.pulse} />
+            <div className={styles.badge}>Nova AI</div>
+            
+            <AnimatePresence>
+              {showHook && (
+                <motion.div 
+                  className={styles.hookBubble}
+                  initial={{ opacity: 0, scale: 0.4, y: 20, x: 20, transformOrigin: 'bottom right' }}
+                  animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.4, y: 20, x: 20 }}
+                  transition={{ 
+                    type: 'spring', 
+                    damping: 18, 
+                    stiffness: 250,
+                    opacity: { duration: 0.2 }
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsOpen(true)
+                    setShowHook(false)
+                  }}
+                >
+                  {hookMessage}
+                  <button 
+                    className={styles.closeHook}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setShowHook(false)
+                    }}
+                  >
+                    ×
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
+        )}
+      </motion.div>
     </div>
   )
 }

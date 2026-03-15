@@ -25,7 +25,6 @@ export const DataProvider = ({ children }) => {
         setVuelos(vuelosData)
         setAerolineas(aerolineasData)
       } catch (error) {
-        console.error('DataService Error:', error)
       } finally {
         setLoading(false)
       }
@@ -42,7 +41,6 @@ export const DataProvider = ({ children }) => {
       const data = await res.json()
       return data
     } catch (error) {
-      console.error('Fetch error:', error)
       return []
     } finally {
       setLoading(false)

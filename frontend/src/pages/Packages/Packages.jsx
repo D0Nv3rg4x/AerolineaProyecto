@@ -4,10 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
 import { useData } from '../../context/DataContext'
 import PassengerSelector from '../../components/PassengerSelector/PassengerSelector.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './Packages.module.css'
 
 
-// Componente acordeón (reutilizado de Flights)
+
 function FilterSection({ title, children }) {
   const [open, setOpen] = useState(true)
   return (
@@ -43,13 +44,13 @@ const cardAnimation = {
 }
 
 export default function Packages() {
+  usePageTitle('Paquetes');
   const navigate = useNavigate()
   const [paquetesApi, setPaquetesApi] = useState([])
   const [loading, setLoading] = useState(true)
   const { convert, symbol, currency } = useCurrency()
-  const { vuelos: todosLosVuelos } = useData()
+  const { vuelos: todosLosVuelos, aerolineas } = useData()
 
-  // ── ESTADOS DE BÚSQUEDA Y FILTROS ──
   const [search, setSearch] = useState({
     origen: 'Santiago (SCL)',
     destino: '',
@@ -65,13 +66,11 @@ export default function Packages() {
     maxPrecio: 3000
   })
 
-  // Derivar Orígenes únicos
   const ORIGENES = useMemo(() => {
     if (!todosLosVuelos) return []
     return [...new Set(todosLosVuelos.map(v => `${v.origen} (${v.codigoOrigen})`))].sort()
   }, [todosLosVuelos])
 
-  // Derivar Destinos únicos de los Paquetes
   const DESTINOS = useMemo(() => {
     return [...new Set(paquetesApi.map(p => `${p.destino}, ${p.pais}`))].sort()
   }, [paquetesApi])
@@ -96,7 +95,6 @@ export default function Packages() {
       })
   }, [])
 
-  // ── LÓGICA DE FILTRADO REAL-TIME ──
   const filteredPaquetes = useMemo(() => {
     return paquetesApi.filter(p => {
       const pPrecio = p.price || p.precio
@@ -139,7 +137,6 @@ export default function Packages() {
           </motion.h1>
           <p className={styles.subtitle}>Aquí están los paquetes más baratos para tu viaje</p>
           
-          {/* ── MINI BUSCADOR (Mismo estilo que vuelos) ── */}
           <motion.div 
             className={styles.miniSearch}
             initial={{ opacity: 0, y: 12 }} 
@@ -181,7 +178,6 @@ export default function Packages() {
       </header>
 
       <div className={styles.body}>
-        {/* ── SIDEBAR FILTROS (Mismo estilo que vuelos) ── */}
         <motion.aside className={styles.sidebar}
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
           <div className={styles.sidebarTitle}>Filtros</div>
@@ -273,8 +269,7 @@ export default function Packages() {
                       <button 
                         className={styles.btnReserve}
                         onClick={() => {
-                          // Buscar un vuelo que coincida con el destino del paquete para la selección de asientos
-                          const flight = todosLosVuelos.find(v => v.destino === p.destino) || todosLosVuelos[0];
+                          const flight = todosLosVuelos?.find(v => v.destino === p.destino) || todosLosVuelos[0];
                           navigate('/asientos', {
                             state: {
                               vuelo: flight,

@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import styles from './Legal.module.css'
+import usePageTitle from '../../hooks/usePageTitle'
 
 export default function Terms() {
+  usePageTitle('Términos');
   return (
     <div className={styles.page}>
       <motion.div 

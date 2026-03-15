@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './SettingsPage.module.css'
 
 export default function SecuritySettings() {
+  usePageTitle('Seguridad');
   const navigate = useNavigate()
 
   return (

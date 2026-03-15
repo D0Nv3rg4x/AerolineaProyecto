@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
 import { useData } from '../../context/DataContext'
 import PassengerSelector from '../../components/PassengerSelector/PassengerSelector.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './Offers.module.css'
 function FilterSection({ title, children }) {
   const [open, setOpen] = useState(true)
@@ -31,6 +32,7 @@ function FilterSection({ title, children }) {
 }
 
 export default function Offers() {
+  usePageTitle('Ofertas');
   const navigate = useNavigate()
   const [offers, setOffers] = useState([])
   const [loading, setLoading] = useState(true)
@@ -52,7 +54,9 @@ export default function Offers() {
         setOffers(data)
         setLoading(false)
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        setLoading(false)
+      })
   }, [])
 
   const ORIGENES = useMemo(() => {

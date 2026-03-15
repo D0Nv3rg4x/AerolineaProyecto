@@ -48,8 +48,7 @@ export default function AuthModal() {
         >
           <button className={styles.close} onClick={() => setAuthModal(false)}>✕</button>
 
-          {/* Logo */}
-          <div className={styles.logoWrap}>
+          <div className={styles.modalLogo}>
             <img src={logo} alt="SkyNova" className={styles.logoImg} />
             <span className={styles.logoName}>Sky<span>Nova</span></span>
           </div>
@@ -63,60 +62,49 @@ export default function AuthModal() {
               : 'Regístrate gratis para guardar tus vuelos'}
           </p>
 
-          {/* Tabs */}
-          <div className={styles.tabs}>
+          <div className={styles.modalTabs}>
             <button className={`${styles.tab} ${tab === 'login'    ? styles.active : ''}`} onClick={() => { setTab('login');    setError('') }}>Iniciar sesión</button>
             <button className={`${styles.tab} ${tab === 'register' ? styles.active : ''}`} onClick={() => { setTab('register'); setError('') }}>Registrarse</button>
           </div>
 
-          {/* Form Content with Animation */}
-          <motion.div
-            key={tab}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.1 }}
-          >
-            {/* Error */}
-            {error && <div className={styles.errorBox}>{error}</div>}
+          {error && <div className={styles.errorBox}>{error}</div>}
 
-              {/* Campos registro */}
-              {tab === 'register' && (
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>Nombre</label>
-                    <input className={styles.input} placeholder="Juan" value={form.nombre}
-                      onChange={e => set('nombre', e.target.value)} onKeyDown={handleKey} />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>Apellido</label>
-                    <input className={styles.input} placeholder="García" value={form.apellido}
-                      onChange={e => set('apellido', e.target.value)} onKeyDown={handleKey} />
-                  </div>
-                </div>
-              )}
-
+          {tab === 'register' && (
+            <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label className={styles.label}>Correo electrónico</label>
-                <input className={styles.input} type="email" placeholder="tu@correo.com"
-                  value={form.email} onChange={e => set('email', e.target.value)} onKeyDown={handleKey} />
+                <label className={styles.label}>Nombre</label>
+                <input className={styles.input} id="nombre" name="nombre" placeholder="Juan" autoComplete="given-name" value={form.nombre}
+                  onChange={e => set('nombre', e.target.value)} onKeyDown={handleKey} />
               </div>
-
               <div className={styles.formGroup}>
-                <label className={styles.label}>Contraseña</label>
-                <input className={styles.input} type="password" placeholder="••••••••"
-                  value={form.password} onChange={e => set('password', e.target.value)} onKeyDown={handleKey} />
+                <label className={styles.label}>Apellido</label>
+                <input className={styles.input} id="apellido" name="apellido" placeholder="García" autoComplete="family-name" value={form.apellido}
+                  onChange={e => set('apellido', e.target.value)} onKeyDown={handleKey} />
               </div>
+            </div>
+          )}
 
-              <button className={styles.btnSubmit} onClick={handleSubmit}>
-                {tab === 'login' ? 'Iniciar sesión' : 'Crear cuenta'}
-              </button>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Correo electrónico</label>
+            <input className={styles.input} id="email" name="email" type="email" placeholder="tu@correo.com" autoComplete="email"
+              value={form.email} onChange={e => set('email', e.target.value)} onKeyDown={handleKey} />
+          </div>
 
-              {tab === 'login' && (
-                <div className={styles.demoNote}>
-                  Cuenta demo: <strong>demo@skynova.cl</strong> / <strong>123456</strong>
-                </div>
-              )}
-            </motion.div>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Contraseña</label>
+            <input className={styles.input} id="password" name="password" type="password" placeholder="••••••••" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
+              value={form.password} onChange={e => set('password', e.target.value)} onKeyDown={handleKey} />
+          </div>
+
+          <button className={styles.btnSubmit} onClick={handleSubmit}>
+            {tab === 'login' ? 'Iniciar sesión' : 'Crear cuenta'}
+          </button>
+
+          {tab === 'login' && (
+            <div className={styles.demoNote}>
+              Cuenta demo: <strong>demo@skynova.cl</strong> / <strong>123456</strong>
+            </div>
+          )}
         </motion.div>
       </motion.div>
     </AnimatePresence>

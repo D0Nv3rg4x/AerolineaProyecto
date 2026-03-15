@@ -5,11 +5,9 @@ import FlightCard from '../../components/FlightCard/FlightCard.jsx'
 import SkeletonCard from '../../components/SkeletonCard/SkeletonCard.jsx'
 import PassengerSelector from '../../components/PassengerSelector/PassengerSelector.jsx'
 import { useData } from '../../context/DataContext'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './Flights.module.css'
 
-// Auxiliares se usarán dentro del componente para tener acceso a los datos
-
-// Componente acordeón para cada grupo de filtros
 function FilterSection({ title, children }) {
   const [open, setOpen] = useState(true)
   return (
@@ -36,6 +34,7 @@ function FilterSection({ title, children }) {
 }
 
 export default function Flights() {
+  usePageTitle('Vuelos');
   const { state, search } = useLocation()
   const queryParams = useMemo(() => new URLSearchParams(search), [search])
   const navigate = useNavigate()
@@ -107,7 +106,6 @@ export default function Flights() {
   const [paxData, setPaxData] = useState(state?.paxData || { adultos: 1, ninos: 0, infantes: 0, totalPax: 1 })
   const [activeTab, setActiveTab] = useState(state?.activeTab || 'ida')
 
-  // Filtros Avanzados
   const [maxPrecio, setMaxPrecio] = useState(2500)
   const limitPrecio = useMemo(() => {
     const prices = todosLosVuelos
@@ -120,7 +118,6 @@ export default function Flights() {
     setMaxPrecio(limitPrecio)
   }, [limitPrecio])
 
-  // Filtros
   const [ordenar, setOrdenar] = useState('precio')
   const [soloDirecto, setSoloDirecto] = useState(false)
   const [soloEscala, setSoloEscala] = useState(false)
@@ -146,7 +143,6 @@ export default function Flights() {
     return lista
   }, [vuelosApi, ordenar, soloDirecto, soloEscala, aerolineasSel, maxPrecio])
 
-  // Buscar vuelos del servidor cuando cambian origen/destino/fecha
   useEffect(() => {
     const search = async () => {
       setLoading(true)
@@ -159,7 +155,6 @@ export default function Flights() {
     }
   }, [nombreOrigen, nombreDestino, fecha, fetchFilteredVuelos])
 
-  // Lógica de Smart Labels (Mejor valor y Más rápido)
   const bestValueId = useMemo(() => {
     if (vuelos.length === 0) return null
     return [...vuelos].sort((a, b) => (a.precio * a.duracionMin) - (b.precio * b.duracionMin))[0].id
@@ -170,7 +165,6 @@ export default function Flights() {
     return [...vuelos].sort((a, b) => a.duracionMin - b.duracionMin)[0].id
   }, [vuelos])
 
-  // Días para el Date Strip
   const dateStrip = useMemo(() => {
     const baseDate = new Date(fecha + 'T12:00:00')
     return Array.from({ length: 7 }, (_, i) => {
@@ -189,7 +183,6 @@ export default function Flights() {
     })
   }, [fecha, nombreOrigen, nombreDestino])
 
-  // Aerolíneas disponibles para la ruta buscada
   const availableAirlines = useMemo(() => {
     const base = todosLosVuelos.filter(v =>
       v.origen.toLowerCase().includes(nombreOrigen.toLowerCase()) &&
@@ -229,7 +222,6 @@ export default function Flights() {
   return (
     <div className={styles.page}>
 
-      {/* HEADER */}
       <div className={styles.header}>
         <div className={styles.headerInner}>
           <div className={styles.breadcrumb}>
@@ -244,7 +236,6 @@ export default function Flights() {
           </motion.h1>
           <p className={styles.routeSub}>{fechaFormateada} · {paxData.totalPax} pasajero{paxData.totalPax !== 1 ? 's' : ''}</p>
 
-          {/* Formulario de búsqueda interactivo premium */}
           <motion.div className={styles.miniSearch}
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }}>
 
@@ -301,10 +292,8 @@ export default function Flights() {
         </div>
       </div>
 
-      {/* BODY */}
       <div className={styles.body}>
 
-        {/* SIDEBAR FILTROS ACORDEÓN */}
         <motion.aside className={styles.sidebar}
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
           <div className={styles.sidebarTitle}>Filtros</div>
@@ -376,10 +365,8 @@ export default function Flights() {
 
         </motion.aside>
 
-        {/* LISTA DE VUELOS */}
         <div className={styles.results}>
 
-          {/* DATE STRIP */}
           <div className={styles.dateStrip}>
             {dateStrip.map(day => (
               <div

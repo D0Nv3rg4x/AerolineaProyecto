@@ -3,9 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import axios from 'axios'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './SeatSelection.module.css'
 
 export default function SeatSelection() {
+  usePageTitle('Selección de Asientos');
   const { state } = useLocation()
   const navigate = useNavigate()
   const { convert, symbol, currency } = useCurrency()
@@ -20,7 +22,6 @@ export default function SeatSelection() {
         setLoadingConfig(false)
       })
       .catch(err => {
-        console.error('Error loading plane config:', err)
         setLoadingConfig(false)
       })
   }, [])

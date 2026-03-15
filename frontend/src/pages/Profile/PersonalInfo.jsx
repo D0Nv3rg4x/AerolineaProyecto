@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../context/AuthContext.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './SettingsPage.module.css'
 
 export default function PersonalInfo() {
+  usePageTitle('Información Personal');
   const { user } = useAuth()
   const navigate = useNavigate()
 

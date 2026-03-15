@@ -13,11 +13,9 @@ export function CartProvider({ children }) {
   }, [cartItems]);
 
   const addToCart = (item) => {
-    // Add logic to check if item already exists or just add it
-    // For flights/packages, we might want unique entries or count
     setCartItems(prev => {
       const exists = prev.find(i => i.id === item.id);
-      if (exists) return prev; // Don't add duplicate for now, or could increment
+      if (exists) return prev;
       return [...prev, { ...item, addedAt: new Date().toISOString() }];
     });
   };

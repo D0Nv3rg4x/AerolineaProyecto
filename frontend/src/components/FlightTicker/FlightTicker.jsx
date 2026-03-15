@@ -25,7 +25,13 @@ export default function FlightTicker() {
   }, [])
 
   return (
-    <div className={styles.tickerContainer}>
+    <motion.div 
+      className={styles.tickerContainer}
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: 32, opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.4, ease: "circOut" }}
+    >
       <div className={styles.label}>LIVE UPDATES</div>
       <div className={styles.content}>
         <AnimatePresence mode="wait">
@@ -41,6 +47,6 @@ export default function FlightTicker() {
           </motion.div>
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   )
 }

@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
 import { useDarkMode } from '../../context/DarkModeContext.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './SettingsPage.module.css'
 
 export default function PreferencesSettings() {
+  usePageTitle('Preferencias');
   const navigate = useNavigate()
   const { currency, setCurrency } = useCurrency()
   const { dark, toggle } = useDarkMode()

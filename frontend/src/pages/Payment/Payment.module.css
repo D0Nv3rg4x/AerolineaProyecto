@@ -1,6 +1,3 @@
-/* ═══════════════════════════
-   PAYMENT PAGE
-   ═══════════════════════════ */
 
 .page {
   min-height: 100vh;
@@ -59,7 +56,6 @@
   letter-spacing: -0.5px;
 }
 
-/* ── STEPS ── */
 .steps {
   display: flex;
   align-items: center;

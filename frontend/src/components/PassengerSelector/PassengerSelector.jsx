@@ -2,10 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
 import styles from './PassengerSelector.module.css'
 
-// priceBase: precio del vuelo en USD (opcional, para mostrar total)
-// onChange: callback con { adultos, ninos, infantes, total }
-// variant: 'dark' (hero) | 'light' (formulario)
-export default function PassengerSelector({ precioBase = 0, onChange, variant = 'dark', initialData }) {
+export default function PassengerSelector({ initialData, onChange, variant = 'light', priceBase = null }) {
     const { convert, symbol, currency } = useCurrency()
     const [open, setOpen] = useState(false)
     const [adultos, setAdultos] = useState(initialData?.adultos ?? 1)
@@ -24,13 +21,13 @@ export default function PassengerSelector({ precioBase = 0, onChange, variant = 
     useEffect(() => {
         if (onChange) {
             const totalPax = adultos + ninos + infantes
-            const totalPrecio = precioBase * (adultos + ninos * 0.75 + infantes * 0.1)
+            const totalPrecio = priceBase * (adultos + ninos * 0.75 + infantes * 0.1)
             onChange({ adultos, ninos, infantes, totalPax, totalPrecio: +totalPrecio.toFixed(2) })
         }
-    }, [adultos, ninos, infantes, precioBase])
+    }, [adultos, ninos, infantes, priceBase])
 
     const totalPax = adultos + ninos + infantes
-    const totalPrecio = precioBase * (adultos + ninos * 0.75 + infantes * 0.1)
+    const totalPrecio = priceBase * (adultos + ninos * 0.75 + infantes * 0.1)
 
     const label = () => {
         const parts = []
@@ -101,7 +98,7 @@ export default function PassengerSelector({ precioBase = 0, onChange, variant = 
                     </div>
 
                     {/* Total si hay precio base */}
-                    {precioBase > 0 && (
+                    {priceBase > 0 && (
                         <div className={styles.total}>
                             <span>{totalPax} pasajero{totalPax !== 1 ? 's' : ''}</span>
                             <span className={styles.totalPrice}>

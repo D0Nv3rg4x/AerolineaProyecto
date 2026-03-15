@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../context/AuthContext.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './Profile.module.css'
 
 export default function Profile() {
+  usePageTitle('Mi Perfil');
   const { user, bookings } = useAuth()
   const navigate = useNavigate()
 

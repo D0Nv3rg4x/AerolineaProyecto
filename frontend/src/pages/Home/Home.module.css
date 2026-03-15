@@ -3,6 +3,11 @@
    ═══════════════════════════════ */
 
 /* ── HERO ── */
+.mainContainer {
+  position: relative;
+  width: 100%;
+}
+
 .hero {
   position: relative;
   /* 68px inner + 1px border-bottom del navbar = 69px */
@@ -624,9 +629,25 @@
   }
 }
 
+/* ── GLOBAL GLOW ── */
+.globalGlow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y),
+    rgba(96, 165, 250, 0.05),
+    transparent 80%
+  );
+}
+
 @media (max-width: 800px) {
-  .trendingGrid {
-    grid-template-columns: 1fr;
+  .heroBadge {
+    margin-bottom: 16px;
   }
 }
 

@@ -4,9 +4,11 @@ import { motion } from 'framer-motion'
 import axios from 'axios'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './Confirmation.module.css'
 
 export default function Confirmation() {
+  usePageTitle('Confirmación de Vuelo');
   const { state } = useLocation()
   const navigate = useNavigate()
   const { convert, symbol, currency } = useCurrency()

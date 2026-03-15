@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import styles from './NotFound.module.css'
+import usePageTitle from '../../hooks/usePageTitle'
 
 export default function NotFound() {
+  usePageTitle('404 No Encontrado');
   const navigate = useNavigate()
 
   return (

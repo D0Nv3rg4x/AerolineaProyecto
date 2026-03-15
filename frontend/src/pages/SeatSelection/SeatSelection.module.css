@@ -1,6 +1,3 @@
-/* ═══════════════════════════
-   SEAT SELECTION PAGE
-   ═══════════════════════════ */
 .page { min-height: 100vh; background: var(--color-bg); padding-bottom: 80px; }
 
 .header {
@@ -31,7 +28,6 @@
   display:grid; grid-template-columns:1fr 320px; gap:28px; align-items:start;
 }
 
-/* ── AVIÓN (Architectural Render) ── */
 .planeWrap {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -57,7 +53,6 @@
   opacity: 0.8;
 }
 
-/* Nose Aerodinámica */
 .planeNose {
   width: 140px;
   height: 100px;
@@ -87,7 +82,6 @@
   opacity: 0.8;
 }
 
-/* Cabina con efecto 'Hull' */
 .planeCabin {
   background: #ffffff;
   border: 1px solid var(--color-border);
@@ -103,7 +97,6 @@
   box-shadow: inset 0 0 60px rgba(0,0,0,0.4);
 }
 
-/* Leyenda minimalista */
 .legend {
   display: flex;
   gap: 20px;
@@ -117,14 +110,12 @@
 .legendItem { display:flex; align-items:center; gap:8px; font-size:0.7rem; font-weight:700; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:0.5px; }
 .legendDot  { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
 
-/* Letras de columnas */
 .colLabels {
   display:grid; grid-template-columns:30px repeat(3,1fr) 30px repeat(3,1fr);
   gap:6px; margin-bottom:12px; text-align:center;
   font-size:0.75rem; font-weight:800; color:var(--color-primary); opacity:0.6;
 }
 
-/* Fila de asientos */
 .seatRow {
   display:grid; grid-template-columns:30px repeat(3,1fr) 30px repeat(3,1fr);
   gap:6px; margin-bottom:6px; align-items:center;
@@ -137,7 +128,6 @@
 
 .aisle { width:30px; }
 
-/* Asientos Archetypes */
 .seat {
   aspect-ratio: 1;
   border-radius: 8px;
@@ -153,7 +143,6 @@
   min-height: 32px;
 }
 
-/* Primera Clase: Gold Shimmer */
 .primera {
   background: linear-gradient(135deg, #fff7ed, #ffedd5);
   border-color: #f59e0b;
@@ -176,14 +165,12 @@
   100% { left: 200%; }
 }
 
-/* Ejecutiva: Deep Ocean & Metallic */
 .ejecutiva {
   background: linear-gradient(135deg, #eff6ff, #dbeafe);
   border-color: #3b82f6;
   color: #1d4ed8;
 }
 
-/* Economica: Minimal Glass */
 .economica {
   background: transparent;
   border: 1px solid var(--color-border);
@@ -242,7 +229,6 @@
   background: linear-gradient(to right, transparent, var(--color-border), transparent);
 }
 
-/* ── MANIFIESTO LATERAL ── */
 .panel {
   background: var(--color-surface);
   border: 1px solid var(--color-border);

@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './SettingsPage.module.css'
 
 export default function PaymentMethodsSettings() {
+  usePageTitle('Métodos de Pago');
   const navigate = useNavigate()
 
   const cards = [

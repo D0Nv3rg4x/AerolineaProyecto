@@ -4,17 +4,19 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: var(--color-surface);
+  background: rgba(var(--color-surface-rgb), 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-md);
-  transition: background 0.3s;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .inner {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 var(--space-lg);
-  height: 68px;
+  padding: 0 var(--space-xl);
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,7 +26,7 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   text-decoration: none;
   cursor: pointer;
 }
@@ -77,10 +79,9 @@
 .links {
   display: flex;
   list-style: none;
-  gap: 16px;
+  gap: 24px;
   margin: 0;
   padding: 0;
-  margin-left: 20px;
 }
 
 .navLink {
@@ -88,12 +89,12 @@
   font-weight: 700;
   color: var(--color-text-muted);
   font-size: 0.9rem;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 12px;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 14px;
 }
 
 .navLink:hover {
@@ -139,14 +140,14 @@
 
 .links a.active {
   color: var(--color-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ── DERECHA ── */
 .navRight {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
 }
 
 /* ── SELECTOR MONEDA ── */
@@ -163,7 +164,8 @@
   background: var(--color-bg-alt);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 6px 12px;
+  height: 40px;
+  padding: 0 14px;
   cursor: pointer;
   transition: all var(--transition);
   font-family: var(--font-body);
@@ -171,7 +173,9 @@
 
 .currencyBtn:hover {
   border-color: var(--color-primary);
-  background: var(--color-bg);
+  background: rgba(var(--color-primary-rgb), 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.1);
 }
 
 .currencyIcon {
@@ -258,10 +262,15 @@
 
 /* ── LOGO IMG ── */
 .logoImg {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   object-fit: contain;
   filter: brightness(1.1);
+  transition: transform 0.3s ease;
+}
+
+.logo:hover .logoImg {
+  transform: scale(1.05);
 }
 
 /* ── DARK MODE BTN ── */
@@ -278,18 +287,37 @@
   transition: all var(--transition);
   color: var(--color-text-muted);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .iconBtn:hover {
   border-color: var(--color-primary);
-  background: var(--color-bg);
+  background: rgba(var(--color-primary-rgb), 0.05);
   color: var(--color-primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.15);
+  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.1);
 }
 
-.iconBtn svg {
-  display: block;
+.searchIconBtn {
+  gap: 10px;
+  padding: 0 16px;
+  width: auto;
+}
+
+.btnShortcut {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.iconBtn:hover .btnShortcut {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  opacity: 1;
 }
 
 /* ── USER MENU ── */
@@ -300,11 +328,12 @@
 .userBtn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: var(--color-bg-alt);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
-  padding: 5px 12px 5px 5px;
+  height: 40px;
+  padding: 0 14px 0 4px;
   cursor: pointer;
   transition: all var(--transition);
   font-family: var(--font-body);
@@ -312,6 +341,9 @@
 
 .userBtn:hover {
   border-color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.1);
 }
 
 .userAvatar {

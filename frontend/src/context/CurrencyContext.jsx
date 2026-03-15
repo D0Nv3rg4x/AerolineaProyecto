@@ -36,7 +36,6 @@ export function CurrencyProvider({ children }) {
           CLP: data.rates.CLP,
         })
       } catch (err) {
-        console.warn('No se pudo obtener tipo de cambio, usando valores de respaldo.', err)
         setRates(FALLBACK_RATES)
       } finally {
         setLoading(false)

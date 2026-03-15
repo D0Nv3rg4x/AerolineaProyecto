@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
 import { useData } from '../../context/DataContext'
 import PassengerSelector from '../../components/PassengerSelector/PassengerSelector.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './Accommodations.module.css'
 
-// Componente acordeón (reutilizado de Flights)
 function FilterSection({ title, children }) {
   const [open, setOpen] = useState(true)
   return (
@@ -33,13 +33,13 @@ function FilterSection({ title, children }) {
 }
 
 export default function Accommodations() {
+  usePageTitle('Alojamientos');
   const navigate = useNavigate()
   const [alojamientos, setAlojamientos] = useState([])
   const [loading, setLoading] = useState(true)
   const { convert, symbol, currency } = useCurrency()
   const { vuelos: todosLosVuelos } = useData()
 
-  // ── ESTADOS DE BÚSQUEDA Y FILTROS ──
   const [search, setSearch] = useState({
     origen: 'Santiago (SCL)',
     destino: '',
@@ -54,14 +54,12 @@ export default function Accommodations() {
     precioMax: 1000
   })
 
-  // Derivar Orígenes únicos de vuelos
   const ORIGENES = useMemo(() => {
     if (!todosLosVuelos) return []
     return [...new Set(todosLosVuelos.map(v => `${v.origen} (${v.codigoOrigen})`))].sort()
   }, [todosLosVuelos])
 
-  // Derivar Destinos únicos de Alojamientos
-  const DESTINOS = useMemo(() => {
+  const CIUDADES = useMemo(() => {
     return [...new Set(alojamientos.map(a => `${a.ciudad}, ${a.pais}`))].sort()
   }, [alojamientos])
 
@@ -145,13 +143,12 @@ export default function Accommodations() {
             <div className={styles.miniSwap} onClick={() => {
               const oldOrg = search.origen;
               const oldDest = search.destino;
-              // Intercambiar solo si el destino es un origen válido
               const destEsOrigen = ORIGENES.some(o => o.includes(oldDest.split(',')[0].trim()))
               if (destEsOrigen) {
                 setSearch({
                   ...search,
                   origen: ORIGENES.find(o => o.includes(oldDest.split(',')[0].trim())),
-                  destino: DESTINOS.find(d => d.includes(oldOrg.split(' (')[0])) || ''
+                  destino: CIUDADES.find(d => d.includes(oldOrg.split(' (')[0])) || ''
                 })
               }
             }}>⇆</div>
@@ -164,7 +161,7 @@ export default function Accommodations() {
                 onChange={e => setSearch({...search, destino: e.target.value})}
               >
                 <option value="">Cualquier destino</option>
-                {DESTINOS.map(d => <option key={d}>{d}</option>)}
+                {CIUDADES.map(d => <option key={d}>{d}</option>)}
               </select>
             </div>
 

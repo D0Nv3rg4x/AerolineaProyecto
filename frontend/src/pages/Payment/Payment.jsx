@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './Payment.module.css'
 
 const fadeUp = {
@@ -13,6 +14,7 @@ const IMPUESTO = 0.19
 const CARGO_SRV = 12
 
 export default function Payment() {
+  usePageTitle('Pago');
   const { state } = useLocation()
   const navigate = useNavigate()
   const { convert, symbol, currency } = useCurrency()

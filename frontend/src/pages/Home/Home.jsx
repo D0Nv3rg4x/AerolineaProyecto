@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import styles from './Home.module.css'
 import { useData } from '../../context/DataContext'
+import usePageTitle from '../../hooks/usePageTitle'
+
+const PLACEHOLDERS = ['¿Tokio?', '¿Londres?', '¿París?', '¿Nueva York?', '¿Madrid?', '¿Roma?', '¿Dubai?', '¿Sídney?']
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -66,6 +69,7 @@ function LuxuryParticles({ trigger }) {
 }
 
 export default function Home() {
+  usePageTitle('Tu próxima aventura');
   const canvasRef = useRef(null)
   const navigate = useNavigate()
   const { vuelos: todosLosVuelos, loading } = useData()
@@ -109,24 +113,29 @@ export default function Home() {
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [burst, setBurst] = useState(null)
+  const [placeholderIndex, setPlaceholderIndex] = useState(0)
+  const [globalMouse, setGlobalMouse] = useState({ x: 50, y: 50 })
   const searchBoxRef = useRef(null)
-
-  const [activeUsers, setActiveUsers] = useState(42)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveUsers(prev => {
-        const delta = Math.floor(Math.random() * 5) - 2
-        return Math.max(20, Math.min(100, prev + delta))
-      })
-    }, 4000)
+      setPlaceholderIndex(prev => (prev + 1) % PLACEHOLDERS.length)
+    }, 3000)
     return () => clearInterval(interval)
   }, [])
 
   const handleMouseMove = (e) => {
-    if (!searchBoxRef.current) return
-    const rect = searchBoxRef.current.getBoundingClientRect()
-    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+    if (searchBoxRef.current) {
+      const rect = searchBoxRef.current.getBoundingClientRect()
+      setMousePos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      })
+    }
+
+    const x = (e.clientX / window.innerWidth) * 100
+    const y = (e.clientY / window.innerHeight) * 100
+    setGlobalMouse({ x, y })
   }
 
   const triggerBurst = (e) => {
@@ -296,7 +305,17 @@ export default function Home() {
   }
 
   return (
-    <main style={{ overflow: 'hidden', height: 'calc(100vh - 69px)' }}>
+    <main 
+      className={styles.mainContainer}
+      style={{ 
+        overflow: 'hidden', 
+        height: 'calc(100vh - 69px)',
+        '--mouse-x': `${globalMouse.x}%`,
+        '--mouse-y': `${globalMouse.y}%`
+      }}
+      onMouseMove={handleMouseMove}
+    >
+      <div className={styles.globalGlow} />
 
       <section className={styles.hero}>
         <canvas ref={canvasRef} className={styles.canvas} />
@@ -333,11 +352,6 @@ export default function Home() {
             variants={fadeUp} initial="hidden" animate="visible" custom={3}
             onMouseMove={handleMouseMove}
           >
-            <div className={styles.liveActivity}>
-              <span className={styles.liveDot} />
-              {activeUsers} personas buscando vuelos ahora
-            </div>
-
             {loading ? (
               <div className={styles.loader}>Cargando rutas...</div>
             ) : (
@@ -383,10 +397,21 @@ export default function Home() {
                       }}>⇆</div>
 
                       <div className={styles.field}>
-                        <label className={styles.fieldLabel}>Destino</label>
-                        <select className={styles.fieldInput} value={destino} onChange={e => { setDestino(e.target.value); triggerBurst(e) }}>
-                          {destinosDisponibles.map(d => <option key={d}>{d}</option>)}
-                        </select>
+                        <div className={styles.fieldBody}>
+                          <div className={styles.fieldLabel}>DESTINO</div>
+                          <div className={styles.fieldInputWrapper}>
+                            <select 
+                              className={styles.fieldInput} 
+                              value={destino} 
+                              onChange={e => { setDestino(e.target.value); triggerBurst(e) }}
+                            >
+                              <option value="" disabled>
+                                {PLACEHOLDERS[placeholderIndex]}
+                              </option>
+                              {destinosDisponibles.map(d => <option key={d}>{d}</option>)}
+                            </select>
+                          </div>
+                        </div>
                       </div>
                     </div>
 

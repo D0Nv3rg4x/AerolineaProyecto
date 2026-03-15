@@ -191,7 +191,8 @@
   align-items: center;
 }
 
-.circleL, .circleR {
+.circleL,
+.circleR {
   width: 30px;
   height: 30px;
   background: #f8fafc;
@@ -200,8 +201,13 @@
   top: 0;
 }
 
-.circleL { left: -15px; }
-.circleR { right: -15px; }
+.circleL {
+  left: -15px;
+}
+
+.circleR {
+  right: -15px;
+}
 
 .dashed {
   flex: 1;
@@ -284,7 +290,8 @@
   gap: 12px;
 }
 
-.btnPrint, .btnDone {
+.btnPrint,
+.btnDone {
   flex: 1;
   padding: 14px;
   border-radius: 12px;
@@ -319,8 +326,67 @@
 }
 
 @media print {
-  .overlay { background: white; padding: 0; }
-  .modal { box-shadow: none; border-radius: 0; max-width: none; }
-  .btnClose, .actions { display: none; }
-  .passContainer { margin: 0; border: 1px solid #eee; }
+
+  :global(html),
+  :global(body) {
+    height: 100vh !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    visibility: hidden !important;
+    background: white !important;
+  }
+
+  .overlay {
+    visibility: visible !important;
+    position: fixed !important;
+    inset: 0 !important;
+    background: white !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    padding-top: 1.5cm !important;
+    z-index: 99999 !important;
+  }
+
+  .overlay * {
+    visibility: visible !important;
+  }
+
+  .modal {
+    width: auto !important;
+    max-width: none !important;
+    background: white !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+
+  .passContainer {
+    width: 18cm !important;
+    border: 1.5px solid #000 !important;
+    margin: 0 !important;
+    border-radius: 12px !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .btnClose,
+  .actions,
+  .circleL,
+  .circleR {
+    display: none !important;
+  }
+
+  .divider {
+    border-top: 1.5px dashed #000 !important;
+    background: none !important;
+    height: 1px !important;
+    margin: 20px !important;
+  }
+
+  @page {
+    size: portrait;
+    margin: 0;
+  }
 }

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
 import BoardingPassModal from '../../components/BoardingPassModal/BoardingPassModal.jsx'
+import usePageTitle from '../../hooks/usePageTitle'
 import styles from './Bookings.module.css'
 
 function Countdown({ targetDate }) {
@@ -39,6 +40,7 @@ function Countdown({ targetDate }) {
 }
 
 export default function Bookings() {
+  usePageTitle('Mis Viajes');
   const navigate          = useNavigate()
   const { user, bookings, setAuthModal } = useAuth()
   const { convert, symbol, currency }    = useCurrency()

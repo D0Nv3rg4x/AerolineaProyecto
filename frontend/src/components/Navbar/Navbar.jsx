@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCurrency } from '../../context/CurrencyContext.jsx'
@@ -7,6 +7,7 @@ import { useDarkMode } from '../../context/DarkModeContext.jsx'
 import logo from '../../assets/logo.png'
 import styles from './Navbar.module.css'
 import LogoutModal from '../LogoutModal/LogoutModal.jsx'
+import QuickSearch from '../QuickSearch/QuickSearch.jsx'
 
 export default function Navbar() {
   const location = useLocation()
@@ -16,6 +17,18 @@ export default function Navbar() {
   const [userMenu, setUserMenu] = useState(false)
   const [currMenu, setCurrMenu] = useState(false)
   const [showLogoutModal, setShowLogoutModal] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+
+  useEffect(() => {
+    const handleKeys = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setIsSearchOpen(true)
+      }
+    }
+    window.addEventListener('keydown', handleKeys)
+    return () => window.removeEventListener('keydown', handleKeys)
+  }, [])
 
   const isActive = (path) => location.pathname === path
 
@@ -80,6 +93,17 @@ export default function Navbar() {
         </ul>
 
         <div className={styles.navRight}>
+
+          <button 
+            className={`${styles.iconBtn} ${styles.searchIconBtn}`} 
+            onClick={() => setIsSearchOpen(true)}
+            title="Buscar vuelos (Cmd+K)"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span className={styles.btnShortcut}>⌘K</span>
+          </button>
 
           <button className={styles.iconBtn} onClick={toggle} title={dark ? 'Modo claro' : 'Modo oscuro'}>
             <AnimatePresence mode="wait">
@@ -212,6 +236,11 @@ export default function Navbar() {
         isOpen={showLogoutModal} 
         onConfirm={() => { logout(); setShowLogoutModal(false) }}
         onCancel={() => setShowLogoutModal(false)}
+      />
+
+      <QuickSearch 
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
       />
     </motion.nav>
   )

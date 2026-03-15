@@ -112,6 +112,15 @@ app.get('/api/alojamientos', (req, res) => {
     }
 })
 
+app.get('/api/config/vuelos', (req, res) => {
+    try {
+        const config = require('./data/aviones.json')
+        res.json(config)
+    } catch (error) {
+        res.status(500).json({ error: 'No se pudo cargar la configuración de aviones' })
+    }
+})
+
 app.get('/api/ofertas', (req, res) => {
     try {
         const ofertas = require('./data/ofertas.json')

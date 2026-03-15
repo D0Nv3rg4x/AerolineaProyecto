@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import Home from './pages/Home/Home.jsx'
 import Flights from './pages/Flights/Flights.jsx'
 import SeatSelection from './pages/SeatSelection/SeatSelection.jsx'
@@ -27,7 +28,6 @@ import { AuthProvider, useAuth } from './context/AuthContext.jsx'
 import { DarkModeProvider } from './context/DarkModeContext.jsx'
 import { DataProvider } from './context/DataContext.jsx'
 import FlightTicker from './components/FlightTicker/FlightTicker.jsx'
-import { useLocation } from 'react-router-dom'
 
 
 function AppInner() {
@@ -50,7 +50,6 @@ function AppInner() {
       <Route path="/terminos" element={<Terms />} />
       <Route path="/cookies" element={<Cookies />} />
       
-      {/* Profile & Settings */}
       <Route path="/perfil" element={<Profile />} />
       <Route path="/perfil/personal" element={<PersonalInfo />} />
       <Route path="/perfil/seguridad" element={<SecuritySettings />} />
@@ -64,7 +63,9 @@ function AppInner() {
 
   return (
     <>
-      {!isHome && <FlightTicker />}
+      <AnimatePresence>
+        {!isHome && <FlightTicker />}
+      </AnimatePresence>
       <Navbar />
       {authModal && <AuthModal />}
       {isHome ? (
