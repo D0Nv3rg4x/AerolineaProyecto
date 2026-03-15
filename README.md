@@ -9,7 +9,7 @@ Proyecto web de aerolínea ficticia desarrollado para un trabajo de redes. Simul
 ## 🖥️ Vista previa
 
 - Página principal con animación de ondas y buscador de vuelos dinámico
-- Red global de vuelos interconectados (240 vuelos programados)
+- Red global de vuelos interconectados (1680+ vuelos programados)
 - Selección de aerolíneas reales (12 marcas representadas)
 - Filtros avanzados: Rango de precio y buscador por fechas (Date Strip)
 - Etiquetas inteligentes en vuelos: Mejor Valor, Más Rápido y Eco-Nova
@@ -127,7 +127,7 @@ AerolineaProyecto/
 │       │   └── DarkModeContext.jsx  # Control de tema
 │       ├── data/
 │       │   ├── aerolineas.json # Info de marcas y colores
-│       │   └── vuelos.json     # 240+ rutas dinámicas
+│       │   └── vuelos.json     # 1680+ rutas dinámicas
 │       ├── pages/
 │       │   ├── Home/         # Landing con buscador inteligente
 │       │   ├── Flights/      # Resultados con filtros avanzados
@@ -168,10 +168,12 @@ Si no quieres registrarte, puedes usar la cuenta de prueba:
 
 ---
 
-## 🌍 Destinos disponibles
+## 🌍 Destinos y Cobertura
 
-+50 destinos desde Santiago (SCL) incluyendo:
-Latinoamérica, Norteamérica, Europa, Asia, Oceanía y África.
+Red global de 12 hubs interconectados incluyendo:
+- **Latinoamérica**: Santiago (SCL), Buenos Aires, Lima, Bogotá, São Paulo, México.
+- **Norteamérica**: Miami, Nueva York.
+- **Europa**: Madrid, Londres, París, Roma.
 
 ---
 
