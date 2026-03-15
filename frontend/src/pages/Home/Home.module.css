@@ -86,10 +86,9 @@
   color: #94a3b8;
   font-weight: 300;
   line-height: 1.7;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   max-width: 520px;
   margin-inline: auto;
-  margin-bottom: 40px;
 }
 
 /* ── SEARCH BOX ── */
@@ -550,14 +549,14 @@
 /* ── LIVE ACTIVITY & WEATHER ── */
 .liveActivity {
   position: absolute;
-  top: -40px;
-  right: 0;
+  top: -30px;
+  left: 0;
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #94a3b8;
+  color: rgba(148, 163, 184, 0.8);
   letter-spacing: 0.5px;
 }
 
@@ -595,8 +594,9 @@
 
 /* ── TRENDING DESTINATIONS ── */
 .trendingSection {
-  margin-top: 60px;
+  margin-top: 100px;
   width: 100%;
+  padding-bottom: 40px;
 }
 
 .sectionTitle {
