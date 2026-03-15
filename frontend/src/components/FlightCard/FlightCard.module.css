@@ -1,0 +1,317 @@
+/* ═══════════════════════════
+   FLIGHT CARD
+   ═══════════════════════════ */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 6px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  padding-top: 48px; /* Espacio para badges */
+}
+
+.card:hover .planeIcon {
+  left: 100%;
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── RUTA ── */
+.routeBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.time {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.airportCode {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0.5px;
+}
+
+.cityName {
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+}
+
+/* ── LÍNEA CENTRAL ── */
+.routeLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 140px;
+}
+
+.duration {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.lineTrack {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+.lineDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.lineFill {
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(to right, var(--color-primary), #93c5fd, var(--color-primary));
+  position: relative;
+}
+
+.planeIcon {
+  position: absolute;
+  top: 50%;
+  left: 0; /* Changed from 50% for glide */
+  transform: translate(-50%, -50%);
+  font-size: 0.85rem;
+  background: var(--color-surface);
+  padding: 0 4px;
+  line-height: 1;
+  transition: left 0.4s ease;
+  z-index: 5;
+}
+
+.stops {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.stopsDirecto {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.stopsEscala {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+/* ── INFO VUELO ── */
+.flightInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.flightNumRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.airlineBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+.flightNum {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.airlineName {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.airplane {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.classBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 4px;
+  width: fit-content;
+}
+
+/* ── PRECIO (Glassmorphism) ── */
+.priceBlock {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 140px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .priceBlock {
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.priceFrom {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.price {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.priceCurrency {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.btnSelect {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  white-space: nowrap;
+  width: 100%;
+}
+
+.btnSelect:hover {
+  background: var(--color-primary-dark);
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 12px;
+  }
+
+  .routeLine {
+    grid-column: span 2;
+    flex-direction: row;
+    min-width: unset;
+  }
+
+  .flightInfo {
+    display: none;
+  }
+
+  .priceBlock {
+    grid-column: span 2;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.pricePerPax {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin-top: -4px;
+}
+
+/* ── SMART BADGES ── */
+.badgesContainer {
+  position: absolute;
+  top: 12px;
+  left: 28px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.smartBadge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: badgeIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.bestValue {
+  background: rgba(37, 99, 235, 0.1);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.fastest {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.eco {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+@keyframes badgeIn {
+  from { opacity: 0; transform: translateY(-10px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

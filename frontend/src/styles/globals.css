@@ -1,0 +1,162 @@
+/* ═══════════════════════════════════════
+   VARIABLES GLOBALES — SkyNova Airlines
+   ═══════════════════════════════════════ */
+:root {
+  /* Colores principales */
+  --color-bg:          #f5f7fa;
+  --color-bg-alt:      #eef1f6;
+  --color-surface:     #ffffff;
+  --color-border:      #e2e8f0;
+
+  /* Brand */
+  --color-primary:     #1a56db;
+  --color-primary-dark:#1341b0;
+  --color-primary-light:#e8f0fe;
+  --color-accent:      #f97316;
+  --color-accent-light:#fff3e8;
+
+  /* Premium UI Effects */
+  --glass-bg:          rgba(255, 255, 255, 0.7);
+  --glass-border:      rgba(255, 255, 255, 0.5);
+  --shadow-premium:    0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 5px 15px -8px rgba(0, 0, 0, 0.05);
+
+  /* Texto */
+  --color-text:        #0f172a;
+  --color-text-muted:  #64748b;
+  --color-text-light:  #94a3b8;
+
+  /* Estado */
+  --color-success:     #16a34a;
+  --color-warning:     #d97706;
+  --color-error:       #dc2626;
+
+  /* Tipografía */
+  --font-heading: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+
+  /* Espaciado */
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   40px;
+  --space-2xl:  64px;
+
+  /* Bordes */
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  20px;
+  --radius-xl:  32px;
+  --radius-full: 9999px;
+
+  /* Sombras Premium */
+  --shadow-sm:  0 2px 4px rgba(0,0,0,0.02);
+  --shadow-md:  0 10px 20px rgba(0,0,0,0.04);
+  --shadow-lg:  0 20px 40px rgba(0,0,0,0.06);
+  --shadow-xl:  0 30px 60px rgba(0,0,0,0.08);
+  --shadow-premium: var(--shadow-lg);
+
+  /* Transiciones */
+  --transition: 0.2s ease;
+  --transition-slow: 0.4s ease;
+}
+
+/* ── DARK MODE ── */
+[data-theme="dark"] {
+  --color-bg:           #0f172a;
+  --color-bg-alt:       #1e293b;
+  --color-surface:      #1e293b;
+  --color-border:       #334155;
+  --color-text:         #f1f5f9;
+  --color-text-muted:   #94a3b8;
+  --color-text-light:   #64748b;
+  --color-primary-light:#1e3a5f;
+  --color-primary-dark: #93c5fd;
+
+  /* Premium UI Effects - Dark */
+  --glass-bg:          rgba(15, 23, 42, 0.6);
+  --glass-border:      rgba(255, 255, 255, 0.08);
+  --shadow-premium:    0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-body);
+  border: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ── UTILIDADES ── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.section {
+  padding: var(--space-2xl) 0;
+}
+
+/* ── CUSTOM SCROLLBAR ── */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+  border: 3px solid var(--color-bg);
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}

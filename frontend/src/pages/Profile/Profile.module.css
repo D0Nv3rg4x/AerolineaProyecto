@@ -1,0 +1,218 @@
+.page { min-height: 100vh; background: var(--color-bg); padding-bottom: 80px; }
+
+/* ── HEADER DEEP BLUE ── */
+.header {
+  background: linear-gradient(135deg, #0b1120, #0f2150);
+  padding: 36px 0 160px;
+  position: relative;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: var(--color-bg);
+  border-radius: 40px 40px 0 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.headerInner { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 0 var(--space-lg); 
+  position: relative;
+  z-index: 10;
+}
+
+.breadcrumb {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumb a {
+  color: #93c5fd;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+
+.breadcrumb a:hover { color: white; }
+
+.pageTitle { 
+  font-family: var(--font-heading); 
+  font-size: 2rem; 
+  font-weight: 800; 
+  color: white; 
+  letter-spacing: -1px; 
+  margin-bottom: 6px; 
+}
+
+.pageSub { 
+  color: #94a3b8; 
+  font-size: 0.9rem; 
+  font-weight: 400;
+}
+
+/* ── BODY ── */
+.body { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 0 var(--space-lg); 
+  margin-top: -100px;
+  position: relative;
+  z-index: 200;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* SIDEBAR CARD */
+.profileCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 6px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  text-align: center;
+  box-shadow: var(--shadow-xl);
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), #3b82f6);
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 25px rgba(26, 86, 219, 0.3);
+  border: 4px solid var(--color-surface);
+}
+
+.userName {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.userEmail {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statVal {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.statLabel {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-light);
+  font-weight: 700;
+}
+
+/* SETTINGS GRID */
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.settingCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: all var(--transition);
+  cursor: pointer;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  box-shadow: var(--shadow-md);
+}
+
+.settingCard:hover {
+  transform: translateY(-4px);
+  border-left-color: var(--color-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.settingIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.settingCard:hover .settingIcon {
+  background: var(--color-primary-light);
+}
+
+.settingInfo h3 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--color-text);
+}
+
+.settingInfo p {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.unauth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .body { grid-template-columns: 1fr; margin-top: -60px; }
+  .header { padding-bottom: 120px; }
+}

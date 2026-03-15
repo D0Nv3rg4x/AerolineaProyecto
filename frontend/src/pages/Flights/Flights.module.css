@@ -1,0 +1,547 @@
+/* ═══════════════════════════
+   FLIGHTS PAGE
+   ═══════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+/* ── HEADER AZUL ── */
+.header {
+  background: linear-gradient(135deg, #0b1120, #0f2150);
+  padding: 36px 0 48px;
+  position: relative;
+  z-index: 100;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: var(--color-bg);
+  border-radius: 40px 40px 0 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.headerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+  position: relative;
+  z-index: 10;
+}
+
+.breadcrumb {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumb a {
+  color: #93c5fd;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+
+.breadcrumb a:hover {
+  color: white;
+}
+
+.routeTitle {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -1px;
+  margin-bottom: 6px;
+}
+
+.routeSub {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+/* ── MINI BUSCADOR ── */
+.miniSearch {
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 14px 24px;
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 50;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.miniField {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 120px;
+  padding: 4px 8px;
+  border-radius: var(--radius-md);
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.miniField:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.miniLabel {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.miniValue,
+.miniSelect,
+.miniDate {
+  font-size: 0.9rem;
+  color: white;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  font-family: var(--font-body);
+  outline: none;
+}
+
+.miniSelect {
+  cursor: pointer;
+  appearance: none;
+  padding-right: 12px;
+}
+
+.miniSelect option {
+  background: #0f172a;
+  color: white;
+}
+
+.miniDate::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.miniSwap {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  margin-top: 14px;
+}
+
+.miniSelect:focus,
+.miniDate:focus {
+  color: #93c5fd;
+}
+
+.miniDivider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btnModify {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  padding: 9px 18px;
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.btnModify:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── BODY ── */
+.body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px var(--space-lg) 80px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ── SIDEBAR FILTROS ── */
+.sidebar {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: sticky;
+  top: 88px;
+  box-shadow: var(--shadow-lg);
+}
+
+.sidebarTitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-text);
+}
+
+.filterGroup {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.filterGroup:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.filterLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #94a3b8;
+}
+
+.filterOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filterOption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  border: 1px solid transparent;
+  font-weight: 500;
+}
+
+.filterOption:hover {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary-light);
+  transform: translateX(4px);
+}
+
+.filterOption input[type="radio"],
+.filterOption input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.filterOption input[type="radio"] {
+  border-radius: 50%;
+}
+
+.filterOption input:checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+}
+
+.filterOption input:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.filterOption input[type="radio"]:checked::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+}
+
+/* ── RESULTADOS ── */
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.resultsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 16px 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.resultsCount {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.resultsCount strong {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.sortSelect {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  appearance: none;
+}
+
+.sortSelect:hover {
+  background: var(--color-bg-alt);
+  border-color: var(--color-primary);
+}
+
+.sortSelect:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.sortSelect option {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* SIN RESULTADOS */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.emptyTitle {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.emptySub {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+}
+
+/* ── ACORDEÓN FILTROS ── */
+.filterGroupBtn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: var(--font-body);
+  margin-bottom: 8px;
+}
+
+.filterChevron {
+  font-size: 0.65rem;
+  color: #64748b;
+  transition: transform 0.2s;
+}
+
+.filterGroupBtn:hover .filterLabel {
+  color: white;
+}
+
+.filterGroupBtn:hover .filterChevron {
+  color: #93c5fd;
+}
+
+
+/* ── AIRLINE BADGE ── */
+.airlineFilterBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+}
+
+/* ── DATE STRIP ── */
+.dateStrip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 4px 16px;
+  scrollbar-width: none;
+  margin-bottom: 8px;
+}
+
+.dateStrip::-webkit-scrollbar {
+  display: none;
+}
+
+.dateItem {
+  flex: 0 0 calc(100% / 7 - 11px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 100px;
+}
+
+.dateItem:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  background: var(--color-primary-light);
+}
+
+.dateItemActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white !important;
+}
+
+.dateItemActive .dateLabel,
+.dateItemActive .datePrice {
+  color: white !important;
+}
+
+.dateLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: var(--color-text-muted);
+}
+
+.datePrice {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+/* ── PRICE SLIDER ── */
+.priceSliderContainer {
+  padding: 10px 0;
+}
+
+.priceValues {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.priceCurrent {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.priceSlider {
+  width: 100%;
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 3px;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.priceSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--color-primary);
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.priceSlider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}

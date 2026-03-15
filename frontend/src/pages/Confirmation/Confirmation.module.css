@@ -1,0 +1,458 @@
+/* ═══════════════════════════
+   CONFIRMATION PAGE
+   ═══════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-bottom: 80px;
+}
+
+/* ── SUCCESS HEADER ── */
+.successHeader {
+  background: linear-gradient(135deg, #064e3b, #065f46);
+  padding: 60px 0 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .successHeader {
+  background: linear-gradient(135deg, #022c22, #064e3b);
+}
+
+.successHeader::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 40px;
+  background: var(--color-bg);
+  border-radius: 40px 40px 0 0;
+}
+
+.successIcon {
+  width: 72px;
+  height: 72px;
+  background: #16a34a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 20px;
+  box-shadow: 0 0 0 12px rgba(22, 163, 74, 0.2);
+}
+
+.successTitle {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.successSub {
+  color: #86efac;
+  font-size: 0.95rem;
+}
+
+.refCode {
+  display: inline-block;
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  padding: 7px 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
+}
+
+/* ── BODY ── */
+.body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px var(--space-lg) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── BOARDING PASS ── */
+.boardingPass {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--color-border);
+  transition: transform 0.3s ease;
+}
+
+.boardingPass:hover {
+  transform: translateY(-4px);
+}
+
+.bpTop {
+  background: linear-gradient(135deg, #0b1120, #1a3060);
+  padding: 28px 32px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bpAirline {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #60a5fa;
+  letter-spacing: -0.5px;
+}
+
+.bpFlightNum {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 3px;
+}
+
+.bpClass {
+  background: rgba(96, 165, 250, 0.15);
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  color: #60a5fa;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.bpRoute {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 32px;
+  background: var(--color-surface);
+}
+
+.bpCity {
+  text-align: center;
+}
+
+.bpCode {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.bpCityName {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.bpTime {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: 6px;
+}
+
+.bpArrowBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  max-width: 200px;
+}
+
+.bpLine {
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(to right, var(--color-primary), #93c5fd, var(--color-primary));
+  position: relative;
+}
+
+.bpPlane {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+}
+
+.bpDuration {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+/* Separador dentado */
+.bpDivider {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0 28px;
+}
+
+.bpDividerLine {
+  flex: 1;
+  border-top: 2px dashed var(--color-border);
+}
+
+.bpDividerCircleL,
+.bpDividerCircleR {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.bpDividerCircleL {
+  margin-left: -12px;
+}
+
+.bpDividerCircleR {
+  margin-right: -12px;
+}
+
+/* Detalles inferiores */
+.bpDetails {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 24px 32px;
+}
+
+.bpDetail {
+  padding: 0 8px;
+}
+
+.bpDetail:first-child {
+  padding-left: 0;
+}
+
+.bpDetail:last-child {
+  padding-right: 0;
+}
+
+.bpDetailLabel {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--color-text-muted);
+  margin-bottom: 5px;
+}
+
+.bpDetailValue {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Barcode */
+.bpBarcode {
+  background: var(--color-bg);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.barcodeLines {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 48px;
+}
+
+.barcodeLines span {
+  background: var(--color-text);
+  width: 2px;
+  border-radius: 1px;
+  opacity: 0.7;
+}
+
+.barcodeRef {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+/* ── VOUCHER EMAIL FORM ── */
+.emailCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 6px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+}
+
+.emailCardTitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.emailCardSub {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 20px;
+}
+
+.emailRow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.emailInput {
+  flex: 1;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 11px 14px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.emailInput:focus {
+  border-color: var(--color-primary);
+}
+
+.btnSend {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 11px 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.btnSend:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btnSend:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.emailStatus {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.emailOk {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.emailError {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ── ACCIONES ── */
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btnAction {
+  flex: 1;
+  min-width: 160px;
+  padding: 13px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all var(--transition);
+  text-align: center;
+}
+
+.btnPrimary {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+}
+
+.btnPrimary:hover {
+  background: var(--color-primary-dark);
+}
+
+.btnOutline {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1.5px solid var(--color-border);
+}
+
+.btnOutline:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-bg-alt);
+  transform: translateY(-2px);
+}
+
+/* Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .bpDetails {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .bpCode {
+    font-size: 2.2rem;
+  }
+
+  .bpRoute {
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}

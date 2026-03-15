@@ -1,0 +1,62 @@
+{
+    "SkyNova Airlines": {
+        "color": "#1a56db",
+        "textColor": "#ffffff",
+        "initials": "SN"
+    },
+    "LATAM Airlines": {
+        "color": "#e31837",
+        "textColor": "#ffffff",
+        "initials": "LA"
+    },
+    "Sky Airline": {
+        "color": "#ff6b00",
+        "textColor": "#ffffff",
+        "initials": "SK"
+    },
+    "JetSmart": {
+        "color": "#ffd700",
+        "textColor": "#000000",
+        "initials": "JS"
+    },
+    "Aerolíneas Argentinas": {
+        "color": "#74b2e2",
+        "textColor": "#ffffff",
+        "initials": "AR"
+    },
+    "Copa Airlines": {
+        "color": "#003087",
+        "textColor": "#ffffff",
+        "initials": "CM"
+    },
+    "Avianca": {
+        "color": "#c8102e",
+        "textColor": "#ffffff",
+        "initials": "AV"
+    },
+    "American Airlines": {
+        "color": "#0078d4",
+        "textColor": "#ffffff",
+        "initials": "AA"
+    },
+    "Air France": {
+        "color": "#002395",
+        "textColor": "#ffffff",
+        "initials": "AF"
+    },
+    "Iberia": {
+        "color": "#cc0000",
+        "textColor": "#ffffff",
+        "initials": "IB"
+    },
+    "Emirates": {
+        "color": "#d71920",
+        "textColor": "#c6a84b",
+        "initials": "EK"
+    },
+    "Turkish Airlines": {
+        "color": "#c70a0a",
+        "textColor": "#ffffff",
+        "initials": "TK"
+    }
+}

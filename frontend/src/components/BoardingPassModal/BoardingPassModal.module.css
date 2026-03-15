@@ -1,0 +1,294 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 17, 32, 0.9);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  will-change: opacity;
+}
+
+.modal {
+  width: 100%;
+  max-width: 500px;
+  background: #f8fafc;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+.btnClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btnClose:hover {
+  transform: rotate(90deg);
+  background: #ff4d4d;
+  color: white;
+}
+
+.passContainer {
+  background: white;
+  margin: 20px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.top {
+  background: linear-gradient(135deg, #0b1120, #1e293b);
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.brand {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.brandLogo {
+  color: #3b82f6;
+  margin-right: 8px;
+}
+
+.brandAirlines {
+  color: #60a5fa;
+  font-weight: 400;
+}
+
+.flightNum {
+  font-size: 0.75rem;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.main {
+  padding: 32px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+}
+
+.station {
+  text-align: center;
+}
+
+.cityCode {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.cityName {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.time {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #3b82f6;
+  margin-top: 8px;
+}
+
+.trajectory {
+  flex: 1;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.line {
+  height: 2px;
+  background: #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.plane {
+  position: absolute;
+  top: -8px;
+  color: #3b82f6;
+  font-size: 1.2rem;
+}
+
+.duration {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-top: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.divider {
+  height: 30px;
+  position: relative;
+  background: white;
+  display: flex;
+  align-items: center;
+}
+
+.circleL, .circleR {
+  width: 30px;
+  height: 30px;
+  background: #f8fafc;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+}
+
+.circleL { left: -15px; }
+.circleR { right: -15px; }
+
+.dashed {
+  flex: 1;
+  border-top: 2px dashed #e2e8f0;
+  margin: 0 20px;
+}
+
+.bottom {
+  padding: 24px;
+  background: white;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.label {
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.barcodeWrap {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #f1f5f9;
+}
+
+.barcode {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 40px;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.bar {
+  width: 2px;
+  background: #0b1120;
+}
+
+.barcodeText {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #64748b;
+}
+
+.totalPay {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.totalPay span {
+  color: #3b82f6;
+  font-weight: 800;
+  font-size: 1rem;
+  margin-left: 4px;
+}
+
+.actions {
+  padding: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.btnPrint, .btnDone {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btnPrint {
+  background: white;
+  border: 2px solid #e2e8f0;
+  color: #1e293b;
+}
+
+.btnPrint:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.btnDone {
+  background: #3b82f6;
+  border: none;
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btnDone:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+}
+
+@media print {
+  .overlay { background: white; padding: 0; }
+  .modal { box-shadow: none; border-radius: 0; max-width: none; }
+  .btnClose, .actions { display: none; }
+  .passContainer { margin: 0; border: 1px solid #eee; }
+}
