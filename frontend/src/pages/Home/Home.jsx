@@ -514,6 +514,21 @@ export default function Home() {
             )}
           </motion.div>
 
+          <motion.div 
+            className={styles.partnersSection}
+            variants={fadeUp} initial="hidden" animate="visible" custom={4}
+          >
+            <span className={styles.partnersTitle}>Nuestros Partners Globales</span>
+            <div className={styles.partnersGrid}>
+              <span>Emirates</span>
+              <span>Lufthansa</span>
+              <span>Iberia</span>
+              <span>Qatar Airways</span>
+              <span>Delta</span>
+              <span>British Airways</span>
+            </div>
+          </motion.div>
+
           {busquedasRecientes.length > 0 && (
             <motion.div 
               className={styles.recentSearches}
