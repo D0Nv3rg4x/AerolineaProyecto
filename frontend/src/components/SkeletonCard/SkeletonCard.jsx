@@ -3,17 +3,38 @@ import styles from './SkeletonCard.module.css'
 export default function SkeletonCard() {
   return (
     <div className={styles.skeletonCard}>
-      <div className={styles.left}>
-        <div className={`${styles.shimmer} ${styles.titleLine}`}></div>
-        <div className={`${styles.shimmer} ${styles.subLine}`}></div>
+      <div className={styles.badges}>
+        <div className={`${styles.skeleton} ${styles.badge}`} />
+        <div className={`${styles.skeleton} ${styles.badge}`} />
       </div>
-      <div className={styles.center}>
-        <div className={`${styles.shimmer} ${styles.lineTrack}`}></div>
-        <div className={`${styles.shimmer} ${styles.duration}`}></div>
+      
+      <div className={styles.main}>
+        <div className={styles.routeBlock}>
+          <div className={`${styles.skeleton} ${styles.time}`} />
+          <div className={`${styles.skeleton} ${styles.code}`} />
+          <div className={`${styles.skeleton} ${styles.city}`} />
+        </div>
+
+        <div className={styles.routeLine}>
+          <div className={`${styles.skeleton} ${styles.line}`} />
+        </div>
+
+        <div className={styles.routeBlock}>
+          <div className={`${styles.skeleton} ${styles.time}`} />
+          <div className={`${styles.skeleton} ${styles.code}`} />
+          <div className={`${styles.skeleton} ${styles.city}`} />
+        </div>
       </div>
-      <div className={styles.right}>
-        <div className={`${styles.shimmer} ${styles.priceBox}`}></div>
-        <div className={`${styles.shimmer} ${styles.btnPlaceholder}`}></div>
+
+      <div className={styles.info}>
+        <div className={`${styles.skeleton} ${styles.airline}`} />
+        <div className={`${styles.skeleton} ${styles.plane}`} />
+      </div>
+
+      <div className={styles.side}>
+        <div className={`${styles.skeleton} ${styles.priceLabel}`} />
+        <div className={`${styles.skeleton} ${styles.price}`} />
+        <div className={`${styles.skeleton} ${styles.button}`} />
       </div>
     </div>
   )

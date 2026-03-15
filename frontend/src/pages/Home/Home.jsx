@@ -4,6 +4,16 @@ import { motion } from 'framer-motion'
 import styles from './Home.module.css'
 import { useData } from '../../context/DataContext'
 
+import ibizaImg from '../../assets/trending/ibiza.png'
+import tokyoImg from '../../assets/trending/tokyo.png'
+import alpsImg from '../../assets/trending/alps.png'
+
+const TRENDING = [
+  { id: 1, name: 'Ibiza, España', price: 499, img: ibizaImg, tag: 'Paraíso' },
+  { id: 2, name: 'Tokio, Japón', price: 899, img: tokyoImg, tag: 'Futurista' },
+  { id: 3, name: 'Alpes, Suiza', price: 750, img: alpsImg, tag: 'Aventura' }
+]
+
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i = 0) => ({
@@ -110,6 +120,31 @@ export default function Home() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [burst, setBurst] = useState(null)
   const searchBoxRef = useRef(null)
+
+  const [activeUsers, setActiveUsers] = useState(42)
+  const [weather, setWeather] = useState(null)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveUsers(prev => {
+        const delta = Math.floor(Math.random() * 5) - 2
+        return Math.max(20, Math.min(100, prev + delta))
+      })
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    if (!destino) {
+      setWeather(null)
+      return
+    }
+    const temps = { 'Madrid': 18, 'Londres': 12, 'París': 14, 'Roma': 20, 'Nueva York': 15, 'Tokio': 16, 'Lima': 22, 'Santiago': 21, 'Buenos Aires': 23, 'Bogotá': 19, 'Ciudad de México': 24, 'Río de Janeiro': 28 }
+    const city = destino.split(' (')[0]
+    const temp = temps[city] || (15 + Math.floor(Math.random() * 15))
+    const icons = ['☀️', '⛅', '☁️']
+    setWeather({ temp, icon: icons[Math.floor(Math.random() * icons.length)] })
+  }, [destino])
 
   const handleMouseMove = (e) => {
     if (!searchBoxRef.current) return
@@ -321,6 +356,11 @@ export default function Home() {
             variants={fadeUp} initial="hidden" animate="visible" custom={3}
             onMouseMove={handleMouseMove}
           >
+            <div className={styles.liveActivity}>
+              <span className={styles.liveDot} />
+              {activeUsers} personas buscando vuelos ahora
+            </div>
+
             {loading ? (
               <div className={styles.loader}>Cargando rutas...</div>
             ) : (
@@ -370,6 +410,15 @@ export default function Home() {
                         <select className={styles.fieldInput} value={destino} onChange={e => { setDestino(e.target.value); triggerBurst(e) }}>
                           {destinosDisponibles.map(d => <option key={d}>{d}</option>)}
                         </select>
+                        {weather && (
+                          <motion.div 
+                            className={styles.weatherBadge}
+                            initial={{ opacity: 0, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                          >
+                            {weather.icon} {weather.temp}°C
+                          </motion.div>
+                        )}
                       </div>
                     </div>
 
@@ -495,6 +544,41 @@ export default function Home() {
                 )}
               </>
             )}
+          </motion.div>
+
+          {/* Trending Destinations */}
+          <motion.div 
+            className={styles.trendingSection}
+            variants={fadeUp} initial="hidden" animate="visible" custom={4}
+          >
+            <h3 className={styles.sectionTitle}>Destinos Tendencia</h3>
+            <div className={styles.trendingGrid}>
+              {TRENDING.map((dest, i) => (
+                <motion.div 
+                  key={dest.id} 
+                  className={styles.trendingCard}
+                  whileHover={{ y: -8 }}
+                  onClick={() => {
+                    const found = ORIGENES.find(o => o.includes(origen.split(' (')[0]))
+                    const destFullName = destinosDisponibles.find(d => d.includes(dest.name.split(',')[0]))
+                    if (destFullName) {
+                      setDestino(destFullName)
+                      handleSearch()
+                    }
+                  }}
+                >
+                  <div className={styles.trendingImgWrapper}>
+                    <img src={dest.img} alt={dest.name} className={styles.trendingImg} />
+                    <div className={styles.trendingOverlay} />
+                    <span className={styles.trendingTag}>{dest.tag}</span>
+                  </div>
+                  <div className={styles.trendingInfo}>
+                    <h4 className={styles.trendingName}>{dest.name}</h4>
+                    <div className={styles.trendingPrice}>Desde <span>${dest.price}</span></div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
 
           {busquedasRecientes.length > 0 && (

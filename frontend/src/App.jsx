@@ -64,7 +64,7 @@ function AppInner() {
 
   return (
     <>
-      <FlightTicker />
+      {!isHome && <FlightTicker />}
       <Navbar />
       {authModal && <AuthModal />}
       {isHome ? (
