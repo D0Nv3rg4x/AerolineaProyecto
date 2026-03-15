@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect } from 'react'
 
 const CurrencyContext = createContext()
 
-// Tasas de respaldo por si falla la API
 const FALLBACK_RATES = {
   USD: 1,
   EUR: 0.92,
@@ -29,7 +28,6 @@ export function CurrencyProvider({ children }) {
   useEffect(() => {
     const fetchRates = async () => {
       try {
-        // API gratuita — no requiere key para conversiones básicas
         const res  = await fetch('https://api.exchangerate-api.com/v4/latest/USD')
         const data = await res.json()
         setRates({
@@ -47,7 +45,6 @@ export function CurrencyProvider({ children }) {
     fetchRates()
   }, [])
 
-  // Convierte un monto desde USD a la moneda activa
   const convert = (amountUSD) => {
     const converted = amountUSD * rates[currency]
     if (currency === 'CLP') return Math.round(converted).toLocaleString('es-CL')

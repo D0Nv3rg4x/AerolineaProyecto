@@ -1,0 +1,45 @@
+.skeletonCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  min-height: 140px;
+  margin-bottom: 20px;
+}
+
+.left, .center, .right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.left { flex: 1; }
+.center { flex: 2; align-items: center; }
+.right { flex: 1; align-items: flex-end; }
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.05) 25%,
+    rgba(148, 163, 184, 0.1) 50%,
+    rgba(148, 163, 184, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.titleLine { width: 80px; height: 24px; }
+.subLine { width: 120px; height: 16px; }
+.lineTrack { width: 100%; height: 2px; }
+.duration { width: 60px; height: 14px; }
+.priceBox { width: 100px; height: 32px; }
+.btnPlaceholder { width: 120px; height: 40px; border-radius: 8px; }

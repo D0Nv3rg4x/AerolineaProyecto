@@ -76,9 +76,34 @@
 /* ── LINKS ── */
 .links {
   display: flex;
-  align-items: center;
-  gap: var(--space-xl);
   list-style: none;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  margin-left: 20px;
+}
+
+.navLink {
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 12px;
+}
+
+.navLink:hover {
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.1);
+}
+
+.active {
+  color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .links a {
@@ -121,7 +146,7 @@
 .navRight {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 /* ── SELECTOR MONEDA ── */

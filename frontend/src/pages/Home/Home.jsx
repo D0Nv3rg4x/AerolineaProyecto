@@ -2,15 +2,8 @@ import { useEffect, useRef, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import styles from './Home.module.css'
-import todosLosVuelos from '../../data/vuelos.json'
+import { useData } from '../../context/DataContext'
 
-// ── Ciudades origen / destino (se derivarán de vuelos.json) ──
-const TODAS_CIUDADES = [...new Set([
-  ...todosLosVuelos.map(v => `${v.origen} (${v.codigoOrigen})`),
-  ...todosLosVuelos.map(v => `${v.destino} (${v.codigoDestino})`)
-])].sort()
-
-// ── Animación de entrada para elementos ──
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i = 0) => ({
@@ -20,16 +13,14 @@ const fadeUp = {
   })
 }
 
-// ── Ciudades origen / destino dinámicas ──
-const getDestinosPara = (org) => {
+const getDestinosPara = (org, vuelos) => {
   const orgNombre = org.split(' (')[0]
-  const destinos = todosLosVuelos
+  const destinos = vuelos
     .filter(v => v.origen === orgNombre)
     .map(v => `${v.destino} (${v.codigoDestino})`)
   return [...new Set(destinos)].sort()
 }
 
-// ── Componente de Micro-partículas de Lujo ──
 function LuxuryParticles({ trigger }) {
   const [particles, setParticles] = useState([])
   
@@ -77,24 +68,29 @@ function LuxuryParticles({ trigger }) {
 export default function Home() {
   const canvasRef = useRef(null)
   const navigate = useNavigate()
+  const { vuelos: todosLosVuelos, loading } = useData()
 
-  // ── Ciudades origen / destino dinámicas ──
   const ORIGENES = useMemo(() => {
+    if (!todosLosVuelos) return []
     return [...new Set(todosLosVuelos.map(v => `${v.origen} (${v.codigoOrigen})`))].sort()
-  }, [])
+  }, [todosLosVuelos])
 
   const [activeTab, setActiveTab] = useState('ida')
-  const [origen, setOrigen] = useState(ORIGENES[0] || '')
+  const [origen, setOrigen] = useState('')
+
+  useEffect(() => {
+    if (ORIGENES.length > 0 && !origen) {
+      setOrigen(ORIGENES[0])
+    }
+  }, [ORIGENES, origen])
   
   const destinosDisponibles = useMemo(() => {
-    if (!origen) return []
-    const flightDestinos = getDestinosPara(origen)
-    return flightDestinos
-  }, [origen])
+    if (!origen || !todosLosVuelos) return []
+    return getDestinosPara(origen, todosLosVuelos)
+  }, [origen, todosLosVuelos])
 
   const [destino, setDestino] = useState('')
 
-  // Sincronizar destino si ya no está disponible al cambiar origen
   useEffect(() => {
     if (destinosDisponibles.length > 0) {
       if (!destinosDisponibles.includes(destino)) {
@@ -111,7 +107,6 @@ export default function Home() {
   const [showPasajeros, setShowPasajeros] = useState(false)
   const pasajerosRef = useRef(null)
 
-  // Glow & Particles State
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [burst, setBurst] = useState(null)
   const searchBoxRef = useRef(null)
@@ -126,17 +121,25 @@ export default function Home() {
     setBurst({ x: e.clientX, y: e.clientY, t: Date.now() })
   }
 
-  // Multidestino
   const hoy = new Date().toISOString().split('T')[0]
-  const [multiLegs, setMultiLegs] = useState([
-    { origen: ORIGENES[0], destino: getDestinosPara(ORIGENES[0])[0], fecha: hoy },
-    { origen: getDestinosPara(ORIGENES[0])[0], destino: getDestinosPara(getDestinosPara(ORIGENES[0])[0])[0] || ORIGENES[0], fecha: hoy },
-  ])
+  const [multiLegs, setMultiLegs] = useState([])
+
+  useEffect(() => {
+    if (ORIGENES.length > 0 && multiLegs.length === 0) {
+      const firstOrg = ORIGENES[0]
+      const firstDest = getDestinosPara(firstOrg, todosLosVuelos)[0]
+      const secondDest = getDestinosPara(firstDest, todosLosVuelos)[0] || firstOrg
+      setMultiLegs([
+        { origen: firstOrg, destino: firstDest, fecha: hoy },
+        { origen: firstDest, destino: secondDest, fecha: hoy },
+      ])
+    }
+  }, [ORIGENES, todosLosVuelos, hoy, multiLegs.length])
 
   const addLeg = () => {
     if (multiLegs.length >= 5) return
     const lastLeg = multiLegs[multiLegs.length - 1]
-    const nextDestinos = getDestinosPara(lastLeg.destino)
+    const nextDestinos = getDestinosPara(lastLeg.destino, todosLosVuelos)
     setMultiLegs([...multiLegs, { origen: lastLeg.destino, destino: nextDestinos[0] || ORIGENES[0], fecha: lastLeg.fecha }])
   }
 
@@ -176,14 +179,13 @@ export default function Home() {
     return `${total} pasajeros`
   }, [pasajeros])
 
-  // ── Canvas estilo PS3 — ribbon waves ──
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     let animId, t = 0
 
     const resize = () => {
-      if (!canvas || !canvas.parentElement) return // Guard for safety
+      if (!canvas || !canvas.parentElement) return 
       canvas.width = canvas.parentElement.clientWidth || window.innerWidth
       canvas.height = canvas.parentElement.offsetHeight || window.innerHeight
     }
@@ -218,6 +220,7 @@ export default function Home() {
     }
 
     const loop = () => {
+      if (!ctx || !canvas) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       t++
       ribbons.forEach(r => {
@@ -236,24 +239,53 @@ export default function Home() {
     }
   }, [])
 
+  const [busquedasRecientes, setBusquedasRecientes] = useState([])
+
+  useEffect(() => {
+    const saved = localStorage.getItem('skyNova_recentSearches')
+    if (saved) setBusquedasRecientes(JSON.parse(saved))
+  }, [])
+
+  const saveSearch = (search) => {
+    const newSearch = {
+      ...search,
+      id: Date.now(),
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+    const filtered = busquedasRecientes.filter(s => 
+      !(s.origen === search.origen && s.destino === search.destino)
+    )
+    const updated = [newSearch, ...filtered].slice(0, 3)
+    setBusquedasRecientes(updated)
+    localStorage.setItem('skyNova_recentSearches', JSON.stringify(updated))
+  }
+
   const handleSearch = () => {
     if (activeTab === 'multi') {
-      // For multi, navigate with the first leg
       navigate('/vuelos', {
         state: { origen: multiLegs[0].origen, destino: multiLegs[0].destino, fecha: multiLegs[0].fecha, pasajeros: pasajerosString, activeTab }
       })
       return
     }
     if (!fecha) return
+    
+    saveSearch({ origen, destino, fecha, activeTab })
+
     navigate('/vuelos', {
       state: { origen, destino, fecha, fechaVuelta: activeTab === 'vuelta' ? fechaVuelta : null, pasajeros: pasajerosString, activeTab }
     })
   }
 
+  const handleRecentClick = (search) => {
+    setOrigen(search.origen)
+    setDestino(search.destino)
+    setFecha(search.fecha)
+    setActiveTab(search.activeTab)
+  }
+
   return (
     <main style={{ overflow: 'hidden', height: 'calc(100vh - 69px)' }}>
 
-      {/* ══ HERO ══ */}
       <section className={styles.hero}>
         <canvas ref={canvasRef} className={styles.canvas} />
         <div className={styles.heroGradient} />
@@ -285,133 +317,75 @@ export default function Home() {
 
           <motion.div
             ref={searchBoxRef}
-            className={styles.searchBox}
+            className={`${styles.searchBox} ${loading ? styles.loading : ''}`}
             variants={fadeUp} initial="hidden" animate="visible" custom={3}
             onMouseMove={handleMouseMove}
           >
-            <LuxuryParticles trigger={burst} />
-            <div className={styles.glowContainer}>
-              <div 
-                className={styles.magneticGlow} 
-                style={{ left: mousePos.x, top: mousePos.y }}
-              />
-            </div>
-            <div className={styles.tripTabs}>
-              {['ida', 'vuelta', 'multi'].map(tab => (
-                <button
-                  key={tab}
-                  className={`${styles.tripTab} ${activeTab === tab ? styles.tripTabActive : ''}`}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab === 'ida' && 'Solo ida'}
-                  {tab === 'vuelta' && 'Ida y vuelta'}
-                  {tab === 'multi' && 'Multidestino'}
-                </button>
-              ))}
-            </div>
-
-            {activeTab !== 'multi' ? (
-              <>
-                <div className={styles.searchRow}>
-                  <div className={styles.field}>
-                    <label className={styles.fieldLabel}>Origen</label>
-                    <select className={styles.fieldInput} value={origen} onChange={e => { setOrigen(e.target.value); triggerBurst(e) }}>
-                      {ORIGENES.map(o => <option key={o}>{o}</option>)}
-                    </select>
-                  </div>
-
-                  <div className={styles.swapBtn} onClick={() => { 
-                    const oldOrg = origen; 
-                    const oldDest = destino;
-                    if (ORIGENES.includes(oldDest)) {
-                      setOrigen(oldDest); 
-                      setDestino(oldOrg);
-                    }
-                  }}>⇆</div>
-
-                  <div className={styles.field}>
-                    <label className={styles.fieldLabel}>Destino</label>
-                    <select className={styles.fieldInput} value={destino} onChange={e => { setDestino(e.target.value); triggerBurst(e) }}>
-                      {destinosDisponibles.map(d => <option key={d}>{d}</option>)}
-                    </select>
-                  </div>
-                </div>
-
-                <div className={styles.searchRow}>
-                  <div className={styles.field}>
-                    <label className={styles.fieldLabel}>{activeTab === 'ida' ? 'Fecha' : 'Ida'}</label>
-                    <input type="date" className={styles.fieldInput} value={fecha} min={hoy} onChange={e => { setFecha(e.target.value); triggerBurst(e) }} />
-                  </div>
-
-                  {activeTab === 'vuelta' && (
-                    <div className={styles.field}>
-                      <label className={styles.fieldLabel}>Vuelta</label>
-                      <input type="date" className={styles.fieldInput} value={fechaVuelta} min={fecha || hoy} onChange={e => setFechaVuelta(e.target.value)} />
-                    </div>
-                  )}
-
-                  <div className={styles.field} ref={pasajerosRef} style={{ position: 'relative' }}>
-                    <label className={styles.fieldLabel}>Pasajeros</label>
-                    <div className={`${styles.fieldInput} ${styles.pasajerosTrigger}`} onClick={() => setShowPasajeros(!showPasajeros)}>
-                      <span>{pasajerosString}</span>
-                      <span className={styles.chevron}>▾</span>
-                    </div>
-                    {showPasajeros && (
-                      <div className={styles.pasajerosPopover}>
-                        {[
-                          { key: 'adultos', label: 'Adultos', sub: 'Desde 12 años', min: 1 },
-                          { key: 'ninos',   label: 'Niños',   sub: '2 – 11 años',  min: 0 },
-                          { key: 'bebes',   label: 'Bebés',   sub: '0 – 2 años',   min: 0 },
-                        ].map(cat => (
-                          <div className={styles.pasajeroRow} key={cat.key}>
-                            <div className={styles.pasajeroInfo}>
-                              <span className={styles.pasajeroName}>{cat.label}</span>
-                              <span className={styles.pasajeroSub}>{cat.sub}</span>
-                            </div>
-                            <div className={styles.counter}>
-                              <button className={styles.counterBtn} disabled={pasajeros[cat.key] <= cat.min} onClick={() => setPasajeros(p => ({ ...p, [cat.key]: Math.max(cat.min, p[cat.key] - 1) }))}>−</button>
-                              <span className={styles.counterVal}>{pasajeros[cat.key]}</span>
-                              <button className={styles.counterBtn} onClick={() => setPasajeros(p => ({ ...p, [cat.key]: p[cat.key] + 1 }))}>+</button>
-                            </div>
-                          </div>
-                        ))}
-                        <button className={styles.popoverDone} onClick={() => setShowPasajeros(false)}>Listo</button>
-                      </div>
-                    )}
-                  </div>
-
-                  <button className={styles.btnSearch} onClick={handleSearch}>Buscar</button>
-                </div>
-              </>
+            {loading ? (
+              <div className={styles.loader}>Cargando rutas...</div>
             ) : (
               <>
-                {multiLegs.map((leg, idx) => (
-                  <div className={styles.legRow} key={idx}>
-                    <div className={styles.field}>
-                      <label className={styles.fieldLabel}>Origen</label>
-                      <select className={styles.fieldInput} value={leg.origen} onChange={e => updateLeg(idx, 'origen', e.target.value)}>
-                        {ORIGENES.map(o => <option key={o}>{o}</option>)}
-                      </select>
+                <LuxuryParticles trigger={burst} />
+                <div className={styles.glowContainer}>
+                  <div 
+                    className={styles.magneticGlow} 
+                    style={{ left: mousePos.x, top: mousePos.y }}
+                  />
+                </div>
+                <div className={styles.tripTabs}>
+                  {['ida', 'vuelta', 'multi'].map(tab => (
+                    <button
+                      key={tab}
+                      className={`${styles.tripTab} ${activeTab === tab ? styles.tripTabActive : ''}`}
+                      onClick={() => setActiveTab(tab)}
+                    >
+                      {tab === 'ida' && 'Solo ida'}
+                      {tab === 'vuelta' && 'Ida y vuelta'}
+                      {tab === 'multi' && 'Multidestino'}
+                    </button>
+                  ))}
+                </div>
+
+                {activeTab !== 'multi' ? (
+                  <>
+                    <div className={styles.searchRow}>
+                      <div className={styles.field}>
+                        <label className={styles.fieldLabel}>Origen</label>
+                        <select className={styles.fieldInput} value={origen} onChange={e => { setOrigen(e.target.value); triggerBurst(e) }}>
+                          {ORIGENES.map(o => <option key={o}>{o}</option>)}
+                        </select>
+                      </div>
+
+                      <div className={styles.swapBtn} onClick={() => { 
+                        const oldOrg = origen; 
+                        const oldDest = destino;
+                        if (ORIGENES.includes(oldDest)) {
+                          setOrigen(oldDest); 
+                          setDestino(oldOrg);
+                        }
+                      }}>⇆</div>
+
+                      <div className={styles.field}>
+                        <label className={styles.fieldLabel}>Destino</label>
+                        <select className={styles.fieldInput} value={destino} onChange={e => { setDestino(e.target.value); triggerBurst(e) }}>
+                          {destinosDisponibles.map(d => <option key={d}>{d}</option>)}
+                        </select>
+                      </div>
                     </div>
 
-                    <div className={styles.swapBtn} onClick={() => swapLeg(idx)}>⇆</div>
+                    <div className={styles.searchRow}>
+                      <div className={styles.field}>
+                        <label className={styles.fieldLabel}>{activeTab === 'ida' ? 'Fecha' : 'Ida'}</label>
+                        <input type="date" className={styles.fieldInput} value={fecha} min={hoy} onChange={e => { setFecha(e.target.value); triggerBurst(e) }} />
+                      </div>
 
-                    <div className={styles.field}>
-                      <label className={styles.fieldLabel}>Destino</label>
-                      <select className={styles.fieldInput} value={leg.destino} onChange={e => updateLeg(idx, 'destino', e.target.value)}>
-                        {(() => {
-                          const flightDestinos = getDestinosPara(leg.origen)
-                          return flightDestinos.map(d => <option key={d}>{d}</option>)
-                        })()}
-                      </select>
-                    </div>
+                      {activeTab === 'vuelta' && (
+                        <div className={styles.field}>
+                          <label className={styles.fieldLabel}>Vuelta</label>
+                          <input type="date" className={styles.fieldInput} value={fechaVuelta} min={fecha || hoy} onChange={e => setFechaVuelta(e.target.value)} />
+                        </div>
+                      )}
 
-                    <div className={styles.field}>
-                      <label className={styles.fieldLabel}>Ida</label>
-                      <input type="date" className={styles.fieldInput} value={leg.fecha} min={hoy} onChange={e => updateLeg(idx, 'fecha', e.target.value)} />
-                    </div>
-
-                    {idx === 0 && (
                       <div className={styles.field} ref={pasajerosRef} style={{ position: 'relative' }}>
                         <label className={styles.fieldLabel}>Pasajeros</label>
                         <div className={`${styles.fieldInput} ${styles.pasajerosTrigger}`} onClick={() => setShowPasajeros(!showPasajeros)}>
@@ -441,23 +415,114 @@ export default function Home() {
                           </div>
                         )}
                       </div>
-                    )}
 
-                    {multiLegs.length > 2 && (
-                      <button className={styles.legRemoveInline} onClick={() => removeLeg(idx)}>✕</button>
-                    )}
-                  </div>
-                ))}
+                      <button className={styles.btnSearch} onClick={handleSearch}>Buscar</button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {multiLegs.map((leg, idx) => (
+                      <div className={styles.legRow} key={idx}>
+                        <div className={styles.field}>
+                          <label className={styles.fieldLabel}>Origen</label>
+                          <select className={styles.fieldInput} value={leg.origen} onChange={e => updateLeg(idx, 'origen', e.target.value)}>
+                            {ORIGENES.map(o => <option key={o}>{o}</option>)}
+                          </select>
+                        </div>
 
-                <div className={styles.multiFooter}>
-                  {multiLegs.length < 5 && (
-                    <button className={styles.btnAddLeg} onClick={addLeg}>+ Agregar tramo</button>
-                  )}
-                  <button className={styles.btnSearch} onClick={handleSearch}>Buscar</button>
-                </div>
+                        <div className={styles.swapBtn} onClick={() => swapLeg(idx)}>⇆</div>
+
+                        <div className={styles.field}>
+                          <label className={styles.fieldLabel}>Destino</label>
+                          <select className={styles.fieldInput} value={leg.destino} onChange={e => updateLeg(idx, 'destino', e.target.value)}>
+                            {(() => {
+                              const flightDestinos = getDestinosPara(leg.origen, todosLosVuelos)
+                              return flightDestinos.map(d => <option key={d}>{d}</option>)
+                            })()}
+                          </select>
+                        </div>
+
+                        <div className={styles.field}>
+                          <label className={styles.fieldLabel}>Ida</label>
+                          <input type="date" className={styles.fieldInput} value={leg.fecha} min={hoy} onChange={e => updateLeg(idx, 'fecha', e.target.value)} />
+                        </div>
+
+                        {idx === 0 && (
+                          <div className={styles.field} ref={pasajerosRef} style={{ position: 'relative' }}>
+                            <label className={styles.fieldLabel}>Pasajeros</label>
+                            <div className={`${styles.fieldInput} ${styles.pasajerosTrigger}`} onClick={() => setShowPasajeros(!showPasajeros)}>
+                              <span>{pasajerosString}</span>
+                              <span className={styles.chevron}>▾</span>
+                            </div>
+                            {showPasajeros && (
+                              <div className={styles.pasajerosPopover}>
+                                {[
+                                  { key: 'adultos', label: 'Adultos', sub: 'Desde 12 años', min: 1 },
+                                  { key: 'ninos',   label: 'Niños',   sub: '2 – 11 años',  min: 0 },
+                                  { key: 'bebes',   label: 'Bebés',   sub: '0 – 2 años',   min: 0 },
+                                ].map(cat => (
+                                  <div className={styles.pasajeroRow} key={cat.key}>
+                                    <div className={styles.pasajeroInfo}>
+                                      <span className={styles.pasajeroName}>{cat.label}</span>
+                                      <span className={styles.pasajeroSub}>{cat.sub}</span>
+                                    </div>
+                                    <div className={styles.counter}>
+                                      <button className={styles.counterBtn} disabled={pasajeros[cat.key] <= cat.min} onClick={() => setPasajeros(p => ({ ...p, [cat.key]: Math.max(cat.min, p[cat.key] - 1) }))}>−</button>
+                                      <span className={styles.counterVal}>{pasajeros[cat.key]}</span>
+                                      <button className={styles.counterBtn} onClick={() => setPasajeros(p => ({ ...p, [cat.key]: p[cat.key] + 1 }))}>+</button>
+                                    </div>
+                                  </div>
+                                ))}
+                                <button className={styles.popoverDone} onClick={() => setShowPasajeros(false)}>Listo</button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {multiLegs.length > 2 && (
+                          <button className={styles.legRemoveInline} onClick={() => removeLeg(idx)}>✕</button>
+                        )}
+                      </div>
+                    ))}
+
+                    <div className={styles.multiFooter}>
+                      {multiLegs.length < 5 && (
+                        <button className={styles.btnAddLeg} onClick={addLeg}>+ Agregar tramo</button>
+                      )}
+                      <button className={styles.btnSearch} onClick={handleSearch}>Buscar</button>
+                    </div>
+                  </>
+                )}
               </>
             )}
           </motion.div>
+
+          {busquedasRecientes.length > 0 && (
+            <motion.div 
+              className={styles.recentSearches}
+              variants={fadeUp} initial="hidden" animate="visible" custom={4}
+            >
+              <h3 className={styles.recentTitle}>Tus búsquedas recientes</h3>
+              <div className={styles.recentGrid}>
+                {busquedasRecientes.map((s) => (
+                  <div 
+                    key={s.id} 
+                    className={styles.recentCard}
+                    onClick={() => handleRecentClick(s)}
+                  >
+                    <div className={styles.recentRoute}>
+                      <span>{s.origen.includes(' (') ? s.origen.split(' (')[1].replace(')', '') : s.origen}</span>
+                      <span className={styles.recentArrow}>→</span>
+                      <span>{s.destino.includes(' (') ? s.destino.split(' (')[1].replace(')', '') : s.destino}</span>
+                    </div>
+                    <div className={styles.recentMeta}>
+                      {s.fecha} • {s.time}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
 
         </div>
       </section>

@@ -1,0 +1,25 @@
+{
+  "planeConfigs": {
+    "Boeing 787-9": {
+      "primera": { "filas": [1, 2], "precio": 320, "label": "Primera Clase" },
+      "ejecutiva": { "filas": [3, 4, 5, 6], "precio": 180, "label": "Ejecutiva" },
+      "economica": { "filas": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], "precio": 0, "label": "Económica" }
+    },
+    "Boeing 777-300": {
+      "primera": { "filas": [1, 2], "precio": 400, "label": "Primera Clase" },
+      "ejecutiva": { "filas": [3, 4, 5, 6, 7], "precio": 220, "label": "Ejecutiva" },
+      "economica": { "filas": [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37], "precio": 0, "label": "Económica" }
+    },
+    "Airbus A350": {
+      "primera": { "filas": [1, 2], "precio": 300, "label": "Primera Clase" },
+      "ejecutiva": { "filas": [3, 4, 5, 6], "precio": 160, "label": "Ejecutiva" },
+      "economica": { "filas": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], "precio": 0, "label": "Económica" }
+    },
+    "default": {
+      "ejecutiva": { "filas": [1, 2, 3], "precio": 80, "label": "Ejecutiva" },
+      "economica": { "filas": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], "precio": 0, "label": "Económica" }
+    }
+  },
+  "cols": ["A", "B", "C", "D", "E", "F"],
+  "colLabels": ["A", "B", "C", "", "D", "E", "F"]
+}

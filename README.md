@@ -1,23 +1,20 @@
-# ✈ SkyNova Airlines
-
-Proyecto web de aerolínea ficticia desarrollado para un trabajo de redes. Simula un sistema completo de compra de boletos con búsqueda de vuelos, reservas, pago simulado y envío de voucher por correo real.
+# 🚀 SkyNova: Plataforma Integral de Viajes
+Proyecto web de ecosistema de viajes desarrollado para un trabajo de redes. Simula un sistema completo de búsqueda y reserva de **vuelos, alojamientos, paquetes turísticos y ofertas relámpago**, con pasarela de pago segura y generación automática de vouchers.
 
 ![Stack](https://img.shields.io/badge/React-18-blue) ![Vite](https://img.shields.io/badge/Vite-5-purple) ![Express](https://img.shields.io/badge/Express-4-green) ![Node](https://img.shields.io/badge/Node-20-brightgreen)
 
 ---
 
-## 🖥️ Vista previa
+## 🖥️ Vista previa y Funcionalidades
 
-- Página principal con animación de ondas y buscador de vuelos dinámico
-- Red global de vuelos interconectados (1680+ vuelos programados)
-- Selección de aerolíneas reales (12 marcas representadas)
-- Filtros avanzados: Rango de precio y buscador por fechas (Date Strip)
-- Etiquetas inteligentes en vuelos: Mejor Valor, Más Rápido y Eco-Nova
-- Conversión de moneda en tiempo real (USD / EUR / CLP)
-- Sistema de login y registro (simulado, con persistencia en localStorage)
-- Modo oscuro / claro
-- Pago simulado (crédito, débito, transferencia)
-- Boarding pass digital y Envío de voucher real por correo (Gmail)
+- **Buscador Multiproducto**: Pestañas dedicadas para Vuelos, Hoteles, Paquetes (Vuelo + Hotel) y Ofertas.
+- **Soporte Multi-pasajero**: Formularios dinámicos para recolectar datos de múltiples viajeros o huéspedes en una sola transacción.
+- **Flujo de Reserva Unificado**: Selección de asientos para vuelos y paquetes, con persistencia de datos hasta el checkout.
+- **Voucher Universal Adaptativo**: Rediseño inteligente que cambia su look según el producto (Azul/Barcode para vuelos, Verde/QR para hoteles, Púrpura para paquetes).
+- **Pasarela de Pago Refinada**: Resumen dinámico en tiempo real, validación de RUT/Email, y sellos de confianza (SSL/PCI-DSS).
+- **Conversión de Moneda en Vivo**: Soporte para USD, EUR y CLP sincronizado con tasas reales.
+- **Estructura Global**: Cobertura en 12 hubs internacionales con miles de rutas programadas.
+- **Modo Oscuro / Claro**: Interfaz moderna y premium con micro-animaciones (Framer Motion).
 
 ---
 
@@ -129,10 +126,14 @@ AerolineaProyecto/
 │       │   ├── aerolineas.json # Info de marcas y colores
 │       │   └── vuelos.json     # 1680+ rutas dinámicas
 │       ├── pages/
-│       │   ├── Home/         # Landing con buscador inteligente
-│       │   ├── Flights/      # Resultados con filtros avanzados
-│       │   ├── Payment/      # Pasarela de pago simulada
-│       │   └── ...           # Mis Reservas, Confirmación, etc.
+│       │   ├── Home/           # Landing con buscador multiproducto
+│       │   ├── Flights/        # Resultados de vuelos con filtros
+│       │   ├── Accommodations/ # Buscador y reserva de hoteles
+│       │   ├── Packages/       # Experiencias Vuelo + Hotel
+│       │   ├── Offers/         # Ofertas relámpago dinámicas
+│       │   ├── SeatSelection/  # Mapa de cabina interactivo
+│       │   ├── Payment/        # Pasarela con soporte multipasajero
+│       │   └── Confirmation/   # Voucher universal y envío de email
 │       └── styles/
 │           └── globals.css   # Tokens de diseño y variables
 └── backend/

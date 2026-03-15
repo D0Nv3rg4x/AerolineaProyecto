@@ -1,0 +1,70 @@
+.tickerContainer {
+  height: 32px;
+  background: #0b1120;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  z-index: 1000;
+  position: relative;
+}
+
+.label {
+  height: 100%;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.label::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  background: var(--color-primary);
+  transform: skewX(-20deg);
+  z-index: -1;
+}
+
+.content {
+  flex: 1;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+}
+
+.message {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.flight { color: #94a3b8; }
+.weather { color: #fbbf24; } /* Amber/Gold */
+.booking { color: #10b981; } /* Emerald */
+.gate { color: #ef4444; }    /* Red */
+.deal { color: #3b82f6; }    /* Blue */
+.system { color: #a855f7; }  /* Purple */
+
+[data-theme="light"] .tickerContainer {
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+[data-theme="light"] .message {
+  color: #64748b;
+}

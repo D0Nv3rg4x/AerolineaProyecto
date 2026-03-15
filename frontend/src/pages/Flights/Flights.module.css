@@ -3,8 +3,39 @@
    ═══════════════════════════ */
 
 .page {
-  min-height: 100vh;
+  min-height: calc(100vh - 69px);
   background: var(--color-bg);
+}
+
+.loadingPage {
+  height: calc(100vh - 69px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+}
+
+.loader {
+  font-size: 1.5rem;
+  color: #60a5fa;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 600;
+}
+
+.loader::after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  border: 3px solid #60a5fa;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ── HEADER AZUL ── */

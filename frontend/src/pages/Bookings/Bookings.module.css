@@ -223,6 +223,24 @@
   opacity: 0.5;
 }
 
+.otherInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.otherTitle {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.otherDest {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
 /* SIDEBAR ENHANCEMENTS */
 .nextTrip {
   margin-top: 24px;

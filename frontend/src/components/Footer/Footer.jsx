@@ -7,7 +7,6 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         
-        {/* BRAND COL */}
         <div className={styles.brandCol}>
           <Link to="/" className={styles.logo}>
             <img src={logo} alt="SkyNova" className={styles.logoImg} />
@@ -23,7 +22,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* COL 1: DESCUBRE */}
         <div className={styles.column}>
           <h4 className={styles.colTitle}>Descubre</h4>
           <ul className={styles.links}>
@@ -34,7 +32,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* COL 2: SOPORTE */}
         <div className={styles.column}>
           <h4 className={styles.colTitle}>Soporte</h4>
           <ul className={styles.links}>
@@ -45,7 +42,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* COL 3: SkyNova */}
         <div className={styles.column}>
           <h4 className={styles.colTitle}>SkyNova</h4>
           <ul className={styles.links}>

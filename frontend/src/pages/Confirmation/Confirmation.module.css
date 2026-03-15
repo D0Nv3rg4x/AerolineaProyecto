@@ -189,7 +189,99 @@
   font-weight: 600;
 }
 
-/* Separador dentado */
+/* Voucher Main (Generic) */
+.voucherMain {
+  padding: 32px 40px;
+}
+
+.voucherDest {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.voucherCountry {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.voucherStay {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--color-bg-alt);
+  padding: 20px 24px;
+  border-radius: var(--radius-md);
+  max-width: fit-content;
+}
+
+.stayPoint {
+  text-align: center;
+}
+
+.stayDate {
+  font-weight: 700;
+  color: var(--color-text);
+  font-size: 1.1rem;
+}
+
+.stayLabel {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.stayLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stayLine::before {
+  content: '';
+  width: 100px;
+  height: 2px;
+  background: var(--color-border);
+}
+
+.stayLine span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.pkgSummary {
+  margin-top: 10px;
+}
+
+.pkgInclusions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pkgTag {
+  background: rgba(109, 40, 217, 0.1);
+  color: #6d28d9;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
 .bpDivider {
   display: flex;
   align-items: center;
@@ -218,6 +310,16 @@
 
 .bpDividerCircleR {
   margin-right: -12px;
+}
+
+/* Voucher Divider (Generic) */
+.voucherDivider {
+  padding: 0 40px;
+}
+
+.voucherDivider .bpDividerLine {
+  border-top: 1px solid var(--color-border);
+  opacity: 0.5;
 }
 
 /* Detalles inferiores */
@@ -282,6 +384,40 @@
   color: var(--color-text-muted);
   letter-spacing: 2px;
   font-weight: 600;
+}
+
+.voucherFooter {
+  background: var(--color-bg-alt);
+  padding: 32px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qrSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.qrLabel {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--color-text-muted);
+  letter-spacing: 1px;
+}
+
+.footerInfo {
+  text-align: right;
+}
+
+.footerStamp {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #10b981;
+  text-transform: uppercase;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
 }
 
 /* ── VOUCHER EMAIL FORM ── */

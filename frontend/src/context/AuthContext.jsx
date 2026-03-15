@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect } from 'react'
 
 const AuthContext = createContext()
 
-// Usuarios de demo precargados
 const DEMO_USERS = [
   { email: 'demo@skynova.cl',  password: '123456', nombre: 'Juan',  apellido: 'García'  },
   { email: 'admin@skynova.cl', password: 'admin',  nombre: 'Admin', apellido: 'SkyNova' },
@@ -11,9 +10,8 @@ const DEMO_USERS = [
 export function AuthProvider({ children }) {
   const [user,      setUser]      = useState(null)
   const [bookings,  setBookings]  = useState([])
-  const [authModal, setAuthModal] = useState(false) // 'login' | 'register' | false
+  const [authModal, setAuthModal] = useState(false)
 
-  // Cargar sesión y reservas desde localStorage al iniciar
   useEffect(() => {
     const savedUser     = localStorage.getItem('sn_user')
     const savedBookings = localStorage.getItem('sn_bookings')
@@ -22,9 +20,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const login = (email, password) => {
-    // Buscar en demo users
     const found = DEMO_USERS.find(u => u.email === email && u.password === password)
-    // Si no está en demo, buscar en usuarios registrados en localStorage
     const registered = JSON.parse(localStorage.getItem('sn_registered') || '[]')
     const regFound   = registered.find(u => u.email === email && u.password === password)
     const match      = found || regFound
@@ -34,7 +30,6 @@ export function AuthProvider({ children }) {
     setUser(userData)
     localStorage.setItem('sn_user', JSON.stringify(userData))
 
-    // Cargar reservas del usuario
     const allBookings = JSON.parse(localStorage.getItem('sn_bookings') || '[]')
     const myBookings  = allBookings.filter(b => b.userEmail === email)
     setBookings(myBookings)

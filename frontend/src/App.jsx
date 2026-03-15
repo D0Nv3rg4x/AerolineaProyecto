@@ -5,6 +5,10 @@ import SeatSelection from './pages/SeatSelection/SeatSelection.jsx'
 import Payment from './pages/Payment/Payment.jsx'
 import Confirmation from './pages/Confirmation/Confirmation.jsx'
 import Bookings from './pages/Bookings/Bookings.jsx'
+import Packages from './pages/Packages/Packages.jsx'
+import Accommodations from './pages/Accommodations/Accommodations.jsx'
+import Offers from './pages/Offers/Offers.jsx'
+import SkyAssistant from './components/SkyAssistant/SkyAssistant.jsx'
 import Privacy from './pages/Legal/Privacy.jsx'
 import Terms from './pages/Legal/Terms.jsx'
 import Cookies from './pages/Legal/Cookies.jsx'
@@ -21,7 +25,10 @@ import AuthModal from './components/AuthModal/AuthModal.jsx'
 import { CurrencyProvider } from './context/CurrencyContext.jsx'
 import { AuthProvider, useAuth } from './context/AuthContext.jsx'
 import { DarkModeProvider } from './context/DarkModeContext.jsx'
+import { DataProvider } from './context/DataContext.jsx'
+import FlightTicker from './components/FlightTicker/FlightTicker.jsx'
 import { useLocation } from 'react-router-dom'
+
 
 function AppInner() {
   const { authModal } = useAuth()
@@ -35,6 +42,9 @@ function AppInner() {
       <Route path="/asientos" element={<SeatSelection />} />
       <Route path="/pago" element={<Payment />} />
       <Route path="/confirmacion" element={<Confirmation />} />
+      <Route path="/paquetes" element={<Packages />} />
+      <Route path="/alojamientos" element={<Accommodations />} />
+      <Route path="/ofertas" element={<Offers />} />
       <Route path="/mis-viajes" element={<Bookings />} />
       <Route path="/privacidad" element={<Privacy />} />
       <Route path="/terminos" element={<Terms />} />
@@ -54,6 +64,7 @@ function AppInner() {
 
   return (
     <>
+      <FlightTicker />
       <Navbar />
       {authModal && <AuthModal />}
       {isHome ? (
@@ -64,6 +75,7 @@ function AppInner() {
           <Footer />
         </div>
       )}
+      <SkyAssistant />
     </>
   )
 }
@@ -71,11 +83,13 @@ function AppInner() {
 function App() {
   return (
     <DarkModeProvider>
-      <CurrencyProvider>
-        <AuthProvider>
-          <AppInner />
-        </AuthProvider>
-      </CurrencyProvider>
+      <DataProvider>
+        <CurrencyProvider>
+          <AuthProvider>
+            <AppInner />
+          </AuthProvider>
+        </CurrencyProvider>
+      </DataProvider>
     </DarkModeProvider>
   )
 }

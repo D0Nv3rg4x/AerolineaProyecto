@@ -1,0 +1,178 @@
+[
+  {
+    "id": "AL-200",
+    "nombre": "Rio de Janeiro Boutique Suites",
+    "ciudad": "Rio de Janeiro",
+    "pais": "Brasil",
+    "imagen": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 2,
+    "precioPorNoche": 197,
+    "tipo": "Hotel",
+    "servicios": [
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Desayuno Incluido",
+      "Restaurante",
+      "Piscina",
+      "Parking"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "AL-201",
+    "nombre": "São Paulo Palace",
+    "ciudad": "São Paulo",
+    "pais": "Brasil",
+    "imagen": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 5,
+    "precioPorNoche": 160,
+    "tipo": "Resort",
+    "servicios": [
+      "Aire Acondicionado",
+      "Wifi Gratis",
+      "Desayuno Incluido",
+      "Piscina",
+      "Spa"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "AL-202",
+    "nombre": "Madrid Skyline Hotel",
+    "ciudad": "Madrid",
+    "pais": "España",
+    "imagen": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 3,
+    "precioPorNoche": 371,
+    "tipo": "Hotel",
+    "servicios": [
+      "Parking",
+      "Restaurante",
+      "Desayuno Incluido"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "AL-203",
+    "nombre": "São Paulo Grand Hotel",
+    "ciudad": "São Paulo",
+    "pais": "Brasil",
+    "imagen": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 3,
+    "precioPorNoche": 450,
+    "tipo": "Resort",
+    "servicios": [
+      "Spa",
+      "Parking",
+      "Gimnasio"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "AL-204",
+    "nombre": "São Paulo Skyline Hotel",
+    "ciudad": "São Paulo",
+    "pais": "Brasil",
+    "imagen": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 2,
+    "precioPorNoche": 315,
+    "tipo": "Resort",
+    "servicios": [
+      "Spa",
+      "Parking",
+      "Restaurante",
+      "Wifi Gratis",
+      "Aire Acondicionado"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "AL-205",
+    "nombre": "Buenos Aires Vista Real",
+    "ciudad": "Buenos Aires",
+    "pais": "Argentina",
+    "imagen": "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 5,
+    "precioPorNoche": 159,
+    "tipo": "Hostal",
+    "servicios": [
+      "Piscina",
+      "Wifi Gratis",
+      "Desayuno Incluido",
+      "Aire Acondicionado",
+      "Parking"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "AL-206",
+    "nombre": "Rio de Janeiro Palace",
+    "ciudad": "Rio de Janeiro",
+    "pais": "Brasil",
+    "imagen": "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 2,
+    "precioPorNoche": 384,
+    "tipo": "Hostal",
+    "servicios": [
+      "Aire Acondicionado",
+      "Gimnasio",
+      "Wifi Gratis",
+      "Spa",
+      "Parking"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "AL-207",
+    "nombre": "Rio de Janeiro Majestic Suites",
+    "ciudad": "Rio de Janeiro",
+    "pais": "Brasil",
+    "imagen": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 3,
+    "precioPorNoche": 49,
+    "tipo": "Resort",
+    "servicios": [
+      "Gimnasio",
+      "Restaurante",
+      "Spa",
+      "Desayuno Incluido",
+      "Aire Acondicionado",
+      "Wifi Gratis"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "AL-208",
+    "nombre": "São Paulo Hospedaje Central",
+    "ciudad": "São Paulo",
+    "pais": "Brasil",
+    "imagen": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 3,
+    "precioPorNoche": 167,
+    "tipo": "Apartamento",
+    "servicios": [
+      "Desayuno Incluido",
+      "Aire Acondicionado",
+      "Parking",
+      "Piscina"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "AL-209",
+    "nombre": "São Paulo Vista Real",
+    "ciudad": "São Paulo",
+    "pais": "Brasil",
+    "imagen": "https://images.unsplash.com/photo-1561501900-3701fa6a0864?auto=format&fit=crop&w=800&q=80",
+    "estrellas": 2,
+    "precioPorNoche": 362,
+    "tipo": "Apartamento",
+    "servicios": [
+      "Desayuno Incluido",
+      "Spa",
+      "Wifi Gratis",
+      "Aire Acondicionado"
+    ],
+    "disponible": true
+  }
+]

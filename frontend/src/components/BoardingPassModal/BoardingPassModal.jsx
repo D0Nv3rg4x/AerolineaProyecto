@@ -5,7 +5,7 @@ import styles from './BoardingPassModal.module.css'
 
 export default function BoardingPassModal({ booking, onClose }) {
   const { convert, symbol, currency } = useCurrency()
-  const { vuelo, form, referencia, total } = booking
+  const { producto, tipo, form, referencia, total } = booking
 
   const barcodeBars = useMemo(() => {
     return Array.from({ length: 40 }).map((_, i) => ({
@@ -13,6 +13,8 @@ export default function BoardingPassModal({ booking, onClose }) {
       opacity: 0.1 + Math.random() * 0.9
     }))
   }, [])
+
+  const isFlight = tipo === 'vuelo'
 
   return (
     <motion.div 
@@ -33,67 +35,78 @@ export default function BoardingPassModal({ booking, onClose }) {
         <button className={styles.btnClose} onClick={onClose}>✕</button>
 
         <div className={styles.passContainer}>
-          {/* TOP SECTION: BRANDING */}
-          <div className={styles.top}>
+          <div className={styles.top} style={{ 
+            background: tipo === 'alojamiento' 
+              ? 'linear-gradient(135deg, #064e3b, #065f46)' 
+              : tipo === 'vuelo' 
+                ? 'linear-gradient(135deg, #0b1120, #1a3060)'
+                : 'linear-gradient(135deg, #4c1d95, #6d28d9)'
+          }}>
             <div className={styles.brand}>
               <span className={styles.brandLogo}>✦</span>
-              SkyNova <span className={styles.brandAirlines}>Airlines</span>
+              SkyNova <span className={styles.brandAirlines}>{tipo === 'alojamiento' ? 'Hotels' : 'Airlines'}</span>
             </div>
             <div className={styles.flightNum}>
-              Vuelo {vuelo.id}
+              {isFlight ? `Vuelo ${producto.id}` : tipo.toUpperCase()}
             </div>
           </div>
 
-          {/* MAIN CONTENT: TRAJECTORY */}
           <div className={styles.main}>
-            <div className={styles.station}>
-              <div className={styles.cityCode}>{vuelo.codigoOrigen}</div>
-              <div className={styles.cityName}>{vuelo.origen}</div>
-              <div className={styles.time}>{vuelo.salida}</div>
-            </div>
+            {isFlight ? (
+              <>
+                <div className={styles.station}>
+                  <div className={styles.cityCode}>{producto.codigoOrigen}</div>
+                  <div className={styles.cityName}>{producto.origen}</div>
+                  <div className={styles.time}>{producto.salida}</div>
+                </div>
 
-            <div className={styles.trajectory}>
-              <div className={styles.line}>
-                <motion.div 
-                  className={styles.plane}
-                  initial={{ left: -10 }}
-                  animate={{ left: '100%' }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                >
-                  ✈
-                </motion.div>
+                <div className={styles.trajectory}>
+                  <div className={styles.line}>
+                    <motion.div 
+                      className={styles.plane}
+                      initial={{ left: -10 }}
+                      animate={{ left: '100%' }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    >
+                      ✈
+                    </motion.div>
+                  </div>
+                  <div className={styles.duration}>{producto.duracion}</div>
+                </div>
+
+                <div className={styles.station}>
+                  <div className={styles.cityCode}>{producto.codigoDestino}</div>
+                  <div className={styles.cityName}>{producto.destino}</div>
+                  <div className={styles.time}>{producto.llegada}</div>
+                </div>
+              </>
+            ) : (
+              <div className={styles.genericInfo}>
+                <div className={styles.genericTitle}>{producto.nombre || producto.titulo}</div>
+                <div className={styles.genericSubtitle}>{producto.ciudad || producto.destino || 'Premium Service'}</div>
               </div>
-              <div className={styles.duration}>{vuelo.duracion}</div>
-            </div>
-
-            <div className={styles.station}>
-              <div className={styles.cityCode}>{vuelo.codigoDestino}</div>
-              <div className={styles.cityName}>{vuelo.destino}</div>
-              <div className={styles.time}>{vuelo.llegada}</div>
-            </div>
+            )}
           </div>
 
-          {/* DASHED DIVIDER */}
           <div className={styles.divider}>
             <div className={styles.circleL} />
             <div className={styles.dashed} />
             <div className={styles.circleR} />
           </div>
 
-          {/* BOTTOM SECTION: PASSENGER INFO */}
           <div className={styles.bottom}>
             <div className={styles.grid}>
               <div className={styles.infoBox}>
-                <div className={styles.label}>PASAJERO</div>
+                <div className={styles.label}>{tipo === 'alojamiento' ? 'HUÉSPED' : 'PASAJERO'}</div>
                 <div className={styles.value}>{form.nombre} {form.apellido}</div>
               </div>
               <div className={styles.infoBox}>
-                <div className={styles.label}>FECHA</div>
-                <div className={styles.value}>{vuelo.fecha}</div>
+                <div className={styles.label}>{tipo === 'alojamiento' ? 'CHECK-IN' : 'FECHA'}</div>
+                <div className={styles.value}>{producto.fecha || booking.extraData?.entrada}</div>
               </div>
               <div className={styles.infoBox}>
-                <div className={styles.label}>ASIENTO</div>
-                <div className={styles.value}>{booking.asientos?.join(', ') || 'Confirmado'}</div>
+                <div className={styles.label}>{isFlight ? 'ASIENTO' : 'DETALLE'}</div>
+                <div className={styles.value}>{booking.asientos?.join(', ') || booking.extraData?.noches ? `${booking.extraData.noches} noches` : 'Confirmado'}</div>
               </div>
               <div className={styles.infoBox}>
                 <div className={styles.label}>REFERENCIA</div>
@@ -121,7 +134,9 @@ export default function BoardingPassModal({ booking, onClose }) {
         </div>
 
         <div className={styles.actions}>
-          <button className={styles.btnPrint} onClick={() => window.print()}>Imprimir Boarding Pass</button>
+          <button className={styles.btnPrint} onClick={() => window.print()}>
+            Imprimir {isFlight ? 'Boarding Pass' : 'Voucher'}
+          </button>
           <button className={styles.btnDone} onClick={onClose}>Cerrar</button>
         </div>
       </motion.div>

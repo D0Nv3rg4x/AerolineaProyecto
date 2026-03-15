@@ -45,16 +45,25 @@ export default function Bookings() {
   const [selectedBooking, setSelectedBooking] = useState(null)
 
   const { upcoming, past } = useMemo(() => {
-    const now = new Date('2026-03-14T21:48:28-03:00') // Usando hora actual del sistema
-    const items = bookings.slice().sort((a, b) => new Date(b.vuelo.fecha) - new Date(a.vuelo.fecha))
+    const now = new Date()
+    const items = bookings.slice().sort((a, b) => {
+      const dateA = new Date(a.producto?.fecha || a.extraData?.entrada || a.createdAt)
+      const dateB = new Date(b.producto?.fecha || b.extraData?.entrada || b.createdAt)
+      return dateB - dateA
+    })
     
     return {
-      upcoming: items.filter(b => new Date(b.vuelo.fecha) >= now).reverse(),
-      past: items.filter(b => new Date(b.vuelo.fecha) < now)
+      upcoming: items.filter(b => {
+        const date = new Date(b.producto?.fecha || b.extraData?.entrada || b.createdAt)
+        return date >= now
+      }).reverse(),
+      past: items.filter(b => {
+        const date = new Date(b.producto?.fecha || b.extraData?.entrada || b.createdAt)
+        return date < now
+      })
     }
   }, [bookings])
 
-  // Si no está logueado
   if (!user) {
     return (
       <div className={styles.page}>
@@ -128,7 +137,7 @@ export default function Bookings() {
           {upcoming.length > 0 && (
             <div className={styles.nextTrip}>
               <div className={styles.nextTripLabel}>Tu próximo viaje es en:</div>
-              <Countdown targetDate={upcoming[0].vuelo.fecha} />
+              <Countdown targetDate={upcoming[0].producto?.fecha || upcoming[0].extraData?.entrada} />
             </div>
           )}
           <div style={{ marginTop: '30px' }}>
@@ -175,26 +184,35 @@ export default function Bookings() {
                   </div>
 
                   <div className={styles.route}>
-                    <div>
-                      <div className={styles.routeCode}>{b.vuelo.codigoOrigen}</div>
-                      <div className={styles.routeName}>{b.vuelo.origen}</div>
-                    </div>
-                    <div className={styles.routeLine}>
-                      <span className={styles.planeIcon}>✈</span>
-                    </div>
-                    <div>
-                      <div className={styles.routeCode}>{b.vuelo.codigoDestino}</div>
-                      <div className={styles.routeName}>{b.vuelo.destino}</div>
-                    </div>
+                    {b.tipo === 'vuelo' ? (
+                      <>
+                        <div>
+                          <div className={styles.routeCode}>{b.producto.codigoOrigen}</div>
+                          <div className={styles.routeName}>{b.producto.origen}</div>
+                        </div>
+                        <div className={styles.routeLine}>
+                          <span className={styles.planeIcon}>✈</span>
+                        </div>
+                        <div>
+                          <div className={styles.routeCode}>{b.producto.codigoDestino}</div>
+                          <div className={styles.routeName}>{b.producto.destino}</div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className={styles.otherInfo}>
+                        <div className={styles.otherTitle}>{b.producto.nombre || b.producto.titulo}</div>
+                        <div className={styles.otherDest}>{b.producto.ciudad || b.producto.destino}</div>
+                      </div>
+                    )}
                   </div>
 
                   <div className={styles.cardFooter}>
                     <div className={styles.metaInfo}>
-                      <span>{b.vuelo.fecha}</span>
+                      <span>{b.producto.fecha || b.extraData?.entrada}</span>
                       <span className={styles.dot}>•</span>
-                      <span>Vuelo {b.vuelo.id}</span>
+                      <span>{b.tipo === 'vuelo' ? `Vuelo ${b.producto.id}` : b.tipo.toUpperCase()}</span>
                     </div>
-                    <div className={styles.viewPass}>Ver Boarding Pass →</div>
+                    <div className={styles.viewPass}>Ver detalle →</div>
                   </div>
                 </motion.div>
               ))}
@@ -215,10 +233,10 @@ export default function Bookings() {
                     <div className={styles.cardRef}>COMPLETADO · {b.referencia}</div>
                   </div>
                   <div className={styles.route}>
-                    <div className={styles.routeCode}>{b.vuelo.codigoOrigen}</div>
+                    <div className={styles.routeCode}>{b.producto.codigoOrigen || b.producto.ciudad || b.producto.destino}</div>
                     <div className={styles.routeArrow}>→</div>
-                    <div className={styles.routeCode}>{b.vuelo.codigoDestino}</div>
-                    <div className={styles.pastDate}>{b.vuelo.fecha}</div>
+                    <div className={styles.routeCode}>{b.producto.codigoDestino || (b.producto.nombre ? 'COMPLETADO' : '...') }</div>
+                    <div className={styles.pastDate}>{b.producto.fecha || b.extraData?.entrada}</div>
                   </div>
                 </motion.div>
               ))}

@@ -1,0 +1,87 @@
+[
+  {
+    "id": "PK-100",
+    "nombre": "Escapada a Lima",
+    "destino": "Lima",
+    "pais": "Perú",
+    "imagen": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    "duracion": "5 días / 4 noches",
+    "precio": 648,
+    "hotel": "Crystal Palace",
+    "estrellas": 3,
+    "incluye": [
+      "Seguro de Viaje",
+      "Traslados Incluidos",
+      "Wifi Premium"
+    ],
+    "tag": "TRENDING"
+  },
+  {
+    "id": "PK-101",
+    "nombre": "Escapada a Buenos Aires",
+    "destino": "Buenos Aires",
+    "pais": "Argentina",
+    "imagen": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=80",
+    "duracion": "10 días / 9 noches",
+    "precio": 1251,
+    "hotel": "Lumina Suites",
+    "estrellas": 5,
+    "incluye": [
+      "Wifi Premium",
+      "Seguro de Viaje",
+      "Traslados Incluidos"
+    ],
+    "tag": null
+  },
+  {
+    "id": "PK-102",
+    "nombre": "Escapada a São Paulo",
+    "destino": "São Paulo",
+    "pais": "Brasil",
+    "imagen": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+    "duracion": "3 días / 2 noches",
+    "precio": 934,
+    "hotel": "Nova Resort & Spa",
+    "estrellas": 3,
+    "incluye": [
+      "City Tour Privado",
+      "Seguro de Viaje",
+      "Traslados Incluidos"
+    ],
+    "tag": null
+  },
+  {
+    "id": "PK-103",
+    "nombre": "Escapada a Mendoza",
+    "destino": "Mendoza",
+    "pais": "Argentina",
+    "imagen": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80",
+    "duracion": "10 días / 9 noches",
+    "precio": 776,
+    "hotel": "Aura Boutique Hotel",
+    "estrellas": 3,
+    "incluye": [
+      "Traslados Incluidos",
+      "City Tour Privado",
+      "Wifi Premium"
+    ],
+    "tag": "TRENDING"
+  },
+  {
+    "id": "PK-104",
+    "nombre": "Escapada a Madrid",
+    "destino": "Madrid",
+    "pais": "España",
+    "imagen": "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80",
+    "duracion": "10 días / 9 noches",
+    "precio": 756,
+    "hotel": "Nova Resort & Spa",
+    "estrellas": 3,
+    "incluye": [
+      "City Tour Privado",
+      "Entradas Museo",
+      "Wifi Premium"
+    ],
+    "tag": "TRENDING"
+  }
+]

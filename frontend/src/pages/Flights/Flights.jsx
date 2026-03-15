@@ -2,20 +2,12 @@ import { useState, useMemo, useRef, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import FlightCard from '../../components/FlightCard/FlightCard.jsx'
+import SkeletonCard from '../../components/SkeletonCard/SkeletonCard.jsx'
 import PassengerSelector from '../../components/PassengerSelector/PassengerSelector.jsx'
-import todosLosVuelos from '../../data/vuelos.json'
-import aerolineas from '../../data/aerolineas.json'
+import { useData } from '../../context/DataContext'
 import styles from './Flights.module.css'
 
-const ORIGENES = [...new Set(todosLosVuelos.map(v => `${v.origen} (${v.codigoOrigen})`))].sort()
-
-const getDestinosPara = (org) => {
-  const orgNombre = org.split(' (')[0]
-  const destinos = todosLosVuelos
-    .filter(v => v.origen === orgNombre)
-    .map(v => `${v.destino} (${v.codigoDestino})`)
-  return [...new Set(destinos)].sort()
-}
+// Auxiliares se usarán dentro del componente para tener acceso a los datos
 
 // Componente acordeón para cada grupo de filtros
 function FilterSection({ title, children }) {
@@ -44,26 +36,73 @@ function FilterSection({ title, children }) {
 }
 
 export default function Flights() {
-  const { state } = useLocation()
+  const { state, search } = useLocation()
+  const queryParams = useMemo(() => new URLSearchParams(search), [search])
   const navigate = useNavigate()
+  const { vuelos: todosLosVuelos, aerolineas, fetchFilteredVuelos, loading: initialLoading } = useData()
+  const [loading, setLoading] = useState(false)
+  const [vuelosApi, setVuelosApi] = useState([])
 
-  // Estado de búsqueda — inicializa con lo que viene del Home
-  const [origen, setOrigen] = useState(state?.origen || ORIGENES[0])
-  
+  const ORIGENES = useMemo(() => {
+    if (!todosLosVuelos) return []
+    return [...new Set(todosLosVuelos.map(v => `${v.origen} (${v.codigoOrigen})`))].sort()
+  }, [todosLosVuelos])
+
+  const getDestinosPara = (org) => {
+    if (!todosLosVuelos) return []
+    const orgNombre = org.split(' (')[0]
+    const destinos = todosLosVuelos
+      .filter(v => v.origen === orgNombre)
+      .map(v => `${v.destino} (${v.codigoDestino})`)
+    return [...new Set(destinos)].sort()
+  }
+
+  const initialOrigen = queryParams.get('origen') 
+    ? ORIGENES.find(o => o.startsWith(queryParams.get('origen'))) || state?.origen
+    : state?.origen
+
+  const [origen, setOrigen] = useState(initialOrigen || (ORIGENES.length > 0 ? ORIGENES[0] : ''))
+
+  const highlightVueloId = queryParams.get('vueloId')
+
+  useEffect(() => {
+    if (!origen && ORIGENES.length > 0) {
+      setOrigen(initialOrigen || ORIGENES[0])
+    }
+  }, [ORIGENES, origen, initialOrigen])
+
   const destinosDisponibles = useMemo(() => {
     return getDestinosPara(origen)
-  }, [origen])
+  }, [origen, todosLosVuelos])
 
-  const [destino, setDestino] = useState(state?.destino || destinosDisponibles[0] || '')
+  const initialDestino = queryParams.get('destino')
+    ? destinosDisponibles.find(d => d.startsWith(queryParams.get('destino'))) || state?.destino
+    : state?.destino
 
-  // Sincronizar destino si ya no está disponible al cambiar origen
+  const [destino, setDestino] = useState(initialDestino || '')
+
   useEffect(() => {
-    if (!destinosDisponibles.includes(destino)) {
-      setDestino(destinosDisponibles[0] || '')
+    if (destinosDisponibles.length > 0) {
+      if (!destino || !destinosDisponibles.includes(destino)) {
+        setDestino(initialDestino || destinosDisponibles[0])
+      }
     }
-  }, [destinosDisponibles])
+  }, [destinosDisponibles, origen, initialDestino])
 
-  const [fecha, setFecha] = useState(state?.fecha || new Date().toISOString().split('T')[0])
+  const initialFecha = queryParams.get('fecha') || state?.fecha || new Date().toISOString().split('T')[0]
+  const [fecha, setFecha] = useState(initialFecha)
+  useEffect(() => {
+    if (queryParams.get('origen')) {
+      const found = ORIGENES.find(o => o.startsWith(queryParams.get('origen')))
+      if (found) setOrigen(found)
+    }
+    if (queryParams.get('destino')) {
+      const found = destinosDisponibles.find(d => d.startsWith(queryParams.get('destino')))
+      if (found) setDestino(found)
+    }
+    if (queryParams.get('fecha')) setFecha(queryParams.get('fecha'))
+  }, [search, ORIGENES, destinosDisponibles])
+
   const [fechaVuelta, setFechaVuelta] = useState(state?.fechaVuelta || '')
   const [paxData, setPaxData] = useState(state?.paxData || { adultos: 1, ninos: 0, infantes: 0, totalPax: 1 })
   const [activeTab, setActiveTab] = useState(state?.activeTab || 'ida')
@@ -91,27 +130,34 @@ export default function Flights() {
   const nombreDestino = destino.split('(')[0].trim()
 
   const vuelos = useMemo(() => {
-    let lista = todosLosVuelos.filter(v =>
-      v.origen.toLowerCase().includes(nombreOrigen.toLowerCase()) &&
-      v.destino.toLowerCase().includes(nombreDestino.toLowerCase())
-    )
-
-    // Filtro por fecha específica
-    lista = lista.filter(v => v.fecha === fecha)
+    let lista = [...vuelosApi]
 
     if (soloDirecto) lista = lista.filter(v => v.escalas === 0)
     if (soloEscala) lista = lista.filter(v => v.escalas > 0)
     if (aerolineasSel.length) lista = lista.filter(v => aerolineasSel.includes(v.aerolinea))
-    
+
     // Filtro de precio máximo
     lista = lista.filter(v => v.precio <= maxPrecio)
 
     if (ordenar === 'precio') lista = [...lista].sort((a, b) => a.precio - b.precio)
     if (ordenar === 'duracion') lista = [...lista].sort((a, b) => a.duracionMin - b.duracionMin)
     if (ordenar === 'salida') lista = [...lista].sort((a, b) => a.salida.localeCompare(b.salida))
-    
+
     return lista
-  }, [nombreOrigen, nombreDestino, fecha, ordenar, soloDirecto, soloEscala, aerolineasSel, maxPrecio])
+  }, [vuelosApi, ordenar, soloDirecto, soloEscala, aerolineasSel, maxPrecio])
+
+  // Buscar vuelos del servidor cuando cambian origen/destino/fecha
+  useEffect(() => {
+    const search = async () => {
+      setLoading(true)
+      const results = await fetchFilteredVuelos({ origen: nombreOrigen, destino: nombreDestino, fecha })
+      setVuelosApi(results)
+      setLoading(false)
+    }
+    if (nombreOrigen && nombreDestino && fecha) {
+      search()
+    }
+  }, [nombreOrigen, nombreDestino, fecha, fetchFilteredVuelos])
 
   // Lógica de Smart Labels (Mejor valor y Más rápido)
   const bestValueId = useMemo(() => {
@@ -172,6 +218,14 @@ export default function Flights() {
     })
     : ''
 
+  if (initialLoading || (!origen && !vuelosApi.length)) {
+    return (
+      <div className={styles.loadingPage}>
+        <div className={styles.loader}>Inicializando sistema...</div>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.page}>
 
@@ -201,11 +255,11 @@ export default function Flights() {
               </select>
             </div>
 
-            <div className={styles.miniSwap} onClick={() => { 
-              const oldOrg = origen; 
+            <div className={styles.miniSwap} onClick={() => {
+              const oldOrg = origen;
               const oldDest = destino;
               if (ORIGENES.includes(oldDest)) {
-                setOrigen(oldDest); 
+                setOrigen(oldDest);
                 setDestino(oldOrg);
               }
             }}>⇆</div>
@@ -288,11 +342,11 @@ export default function Flights() {
                 <span>$0</span>
                 <span className={styles.priceCurrent}>${maxPrecio}</span>
               </div>
-              <input 
-                type="range" 
+              <input
+                type="range"
                 className={styles.priceSlider}
-                min="0" 
-                max={limitPrecio} 
+                min="0"
+                max={limitPrecio}
                 step="10"
                 value={maxPrecio}
                 onChange={e => setMaxPrecio(Number(e.target.value))}
@@ -324,12 +378,12 @@ export default function Flights() {
 
         {/* LISTA DE VUELOS */}
         <div className={styles.results}>
-          
+
           {/* DATE STRIP */}
           <div className={styles.dateStrip}>
             {dateStrip.map(day => (
-              <div 
-                key={day.date} 
+              <div
+                key={day.date}
                 className={`${styles.dateItem} ${day.isToday ? styles.dateItemActive : ''}`}
                 onClick={() => setFecha(day.date)}
               >
@@ -350,7 +404,11 @@ export default function Flights() {
             </select>
           </div>
 
-          {vuelos.length === 0 ? (
+          {loading ? (
+            <div className={styles.skeletonList}>
+              {[1, 2, 3].map(i => <SkeletonCard key={i} />)}
+            </div>
+          ) : vuelos.length === 0 ? (
             <div className={styles.empty}>
               <div className={styles.emptyIcon}>Vuelos</div>
               <div className={styles.emptyTitle}>No encontramos vuelos</div>
@@ -358,13 +416,14 @@ export default function Flights() {
             </div>
           ) : (
             vuelos.map((v, i) => (
-              <FlightCard 
-                key={v.id} 
-                vuelo={v} 
-                index={i} 
-                paxData={paxData} 
+              <FlightCard
+                key={v.id}
+                vuelo={v}
+                index={i}
+                paxData={paxData}
                 isBestValue={v.id === bestValueId}
                 isFastest={v.id === fastestId}
+                isHighlighted={v.id === highlightVueloId}
               />
             ))
           )}
